@@ -12,6 +12,7 @@ const generatedDirPath = path.join(projectRoot, 'src', 'lib', 'generated');
 const outputPath = path.join(generatedDirPath, 'daily-articles.json');
 const perRouteStoreDirPath = path.join(generatedDirPath, 'artiples');
 const skillPath = path.join(projectRoot, '.opencode', 'human-wiriting', 'SKILL.md');
+const seoSkillPath = path.join(projectRoot, '.opencode', 'seo-skills', 'write-content', 'SKILL.md');
 const colordleDataPath = path.join(projectRoot, 'static', 'colordle_data.json');
 
 const WORDLE_API_BASE_URL =
@@ -426,6 +427,23 @@ async function readSkillText() {
   }
 }
 
+async function readSeoSkillText() {
+  try {
+    const raw = await readFile(seoSkillPath, 'utf8');
+    if (!raw.trim()) {
+      console.warn(`SEO skill file is empty: ${seoSkillPath}. Continuing without SEO skill.`);
+      return '';
+    }
+    return raw.trim();
+  } catch (error) {
+    console.warn(
+      `Unable to read the SEO skill at ${seoSkillPath}. Continuing without SEO skill.`,
+      error.message
+    );
+    return '';
+  }
+}
+
 async function fetchJson(url, init = {}) {
   const response = await fetch(url, {
     ...init,
@@ -597,7 +615,10 @@ async function getColordleContext(targetDate) {
   };
 }
 
+// Expanded banned phrases list from superseo-skills anti-slop ruleset
+// Tier 1: Always remove — these are the highest-signal AI tells
 const BANNED_PHRASES = [
+  // Original banned phrases
   'welcome to today',
   'welcome to the',
   'your daily guide',
@@ -612,10 +633,6 @@ const BANNED_PHRASES = [
   "whether you're a",
   "here's what you need to know",
   "here's the thing:",
-  'furthermore',
-  'moreover',
-  'it is worth noting',
-  'in conclusion',
   'resonates deeply',
   'resonates powerfully',
   'cultural touchstone',
@@ -637,7 +654,64 @@ const BANNED_PHRASES = [
   'language model',
   'mastering the',
   'what makes this game distinctive',
-  'not officially affiliated'
+  'not officially affiliated',
+  // Anti-slop Tier 1 additions from superseo-skills
+  'delve',
+  'tapestry',
+  'realm of',
+  'landscape', // metaphorical use
+  'multifaceted',
+  'testament',
+  'cutting-edge',
+  'revolutionary',
+  'game-changer',
+  'unlock potential',
+  'harness',
+  'endeavour',
+  'embark',
+  'navigate', // metaphorical
+  'pivotal',
+  'intricate',
+  'seamless',
+  'robust',
+  'transformative',
+  'meticulous',
+  'facilitate',
+  'utilize',
+  'commence',
+  'paramount',
+  'plethora',
+  'myriad',
+  'culminate',
+  'underscore',
+  'bolster',
+  'spearhead',
+  'vibrant',
+  'innovative',
+  // Banned phrases from anti-slop
+  "it's worth noting",
+  "in today's",
+  'furthermore',
+  'moreover',
+  'additionally',
+  "without further ado",
+  'in conclusion',
+  'in summary',
+  'in essence',
+  "it's important to note",
+  'stands as a testament',
+  'plays a vital role',
+  'plays a crucial role',
+  'plays a pivotal role',
+  'in the realm of',
+  'it goes without saying',
+  'buckle up',
+  'strap in',
+  'ever-evolving landscape',
+  'marking a pivotal moment',
+  'showcase',
+  'streamline',
+  'comprehensive'  // as adjective
 ];
 
 function containsBannedPhrases(html) {
@@ -672,6 +746,21 @@ const BANNED_PHRASE_LIST_LINES = [
   '- "AI-powered", "AI-assisted", "machine learning", "language model"',
   '- Any sentence that could appear on a different game\'s page with just the name swapped',
   '',
+  'EXPANDED BANNED WORDS (anti-slop from superseo-skills):',
+  '- NEVER use: delve, tapestry, realm, landscape (metaphorical), multifaceted, nuanced, testament,',
+  '  cutting-edge, revolutionary, comprehensive (adjective), crucial, compelling, vibrant, game-changer,',
+  '  leverage (verb), unlock potential, harness, endeavour, embark, navigate (metaphorical), pivotal,',
+  '  intricate, innovative, seamless, robust, transformative, meticulous, facilitate, utilize, commence,',
+  '  paramount, plethora, myriad, culminate, underscore, bolster, spearhead, showcase, streamline',
+  '- NEVER use: "It\'s worth noting", "In today\'s [anything]", "Let\'s dive in", "In conclusion",',
+  '  "plays a crucial/vital/pivotal role", "It goes without saying", "In the realm of"',
+  '- AVOID: rule-of-three groupings (use 2 or 4 items instead)',
+  '- AVOID: synonym cycling (repeat the right word rather than finding alternatives)',
+  '- AVOID: em-dash chains (max 1-2 per 1000 words)',
+  '- AVOID: binary contrasts ("it\'s not X, it\'s Y")',
+  '- AVOID: participial tack-ons ("...highlighting the importance of X")',
+  '- AVOID: clustering of: however, notably, essentially, that said, arguably',
+  '',
   'REQUIRED WRITING STYLE:',
   '- Start directly with something specific about today\'s puzzle or answer. No warm-up paragraph.',
   '- Write like you played the game today and have an opinion about it.',
@@ -681,16 +770,46 @@ const BANNED_PHRASE_LIST_LINES = [
   '- Never repeat the same information in multiple sections.',
   '- Do not write encyclopedic background about the game — the reader already plays it.',
   '- Do not write a "Why fans love this game" section — that is filler.',
-  '- Vary paragraph structure. Not every paragraph should be 3 sentences.'
+  '- Vary paragraph structure. Not every paragraph should be 3 sentences.',
+  '- Use contractions: "doesn\'t" not "does not."',
+  '- Show, don\'t just state. Narrate brief scenarios instead of flat claims.',
+  '- Break the topic-sentence-support pattern. Start some paragraphs with an example or question.',
+  '',
+  'E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) REQUIREMENTS:',
+  '- Write from first-hand experience perspective: "When I solved today\'s puzzle..." or "Here\'s what tripped me up..."',
+  '- Include at least 2-3 internal links to other WordSolverX pages per article (solver tools, archives, other answer pages)',
+  '- Be transparent about limitations: mention if a hint could be misleading, or if the answer surprised you',
+  '- Use specific, concrete observations from the puzzle data provided — no generic filler',
+  '- Every factual claim must be verifiable from the puzzle data given',
+  '- Do NOT fabricate personal stories, test results, or experiences you did not have',
+  '- Write as Preston Hayes, the site\'s Word Puzzle Analyst who has solved 500+ daily puzzles',
+  '',
+  'SEO STRUCTURE REQUIREMENTS:',
+  '- Place a 40-60 word direct answer immediately after the first H2 — targets featured snippets',
+  '- Weave 2-3 People Also Ask questions into the article as H2/H3 headings with direct answers',
+  '- Include 3-5 internal links per 1000 words. Use descriptive anchor text — never "click here"',
+  '- Front-load value. The first screen is the highest-value real estate. No preamble paragraphs',
+  '- Primary keyword should appear in H1, first 100 words, and 2-3 H2s'
 ];
 
-function buildWordlePrompt(skillText, context) {
+function buildWordlePrompt(skillText, context, seoSkillText = '') {
+  const seoSection = seoSkillText
+    ? [
+        '',
+        'SEO writing rules to follow (from superseo-skills):',
+        seoSkillText,
+        ''
+      ]
+    : [];
+
   return [
     'You are writing a daily Wordle answer page for a real site. Return JSON only.',
     '',
+    'You are writing as Preston Hayes, the site\'s Word Puzzle Analyst who has solved 500+ daily puzzles since Wordle launched in October 2021. You play these games every day. Write from genuine experience and expertise.',
+    '',
     'Human writing rules to follow:',
     skillText,
-    '',
+    ...seoSection,
     ...BANNED_PHRASE_LIST_LINES,
     '',
     'Output shape:',
@@ -738,13 +857,24 @@ function buildWordlePrompt(skillText, context) {
   ].join('\n');
 }
 
-function buildColordlePrompt(skillText, context) {
+function buildColordlePrompt(skillText, context, seoSkillText = '') {
+  const seoSection = seoSkillText
+    ? [
+        '',
+        'SEO writing rules to follow (from superseo-skills):',
+        seoSkillText,
+        ''
+      ]
+    : [];
+
   return [
     'You are writing a daily Colordle answer page for a real site. Return JSON only.',
     '',
+    'You are writing as Preston Hayes, the site\'s Word Puzzle Analyst who has solved 500+ daily puzzles since Wordle launched in October 2021. You play these games every day. Write from genuine experience and expertise.',
+    '',
     'Human writing rules to follow:',
     skillText,
-    '',
+    ...seoSection,
     ...BANNED_PHRASE_LIST_LINES,
     '',
     'Output shape:',
@@ -879,16 +1009,27 @@ const GAME_CUSTOM_INSTRUCTIONS = {
   'sportle-answer-today': 'Sports-themed words. Think equipment, positions, venues, and sports terminology.'
 };
 
-function buildGenericPrompt(skillText, entry, targetDate) {
+function buildGenericPrompt(skillText, entry, targetDate, seoSkillText = '') {
   const formattedDate = formatLongDate(targetDate);
   const customInstruction = GAME_CUSTOM_INSTRUCTIONS[entry.key];
+
+  const seoSection = seoSkillText
+    ? [
+        '',
+        'SEO writing rules to follow (from superseo-skills):',
+        seoSkillText,
+        ''
+      ]
+    : [];
 
   const lines = [
     'You are writing a daily answer-page article for a real puzzle website. Return JSON only.',
     '',
+    'You are writing as Preston Hayes, the site\'s Word Puzzle Analyst who has solved 500+ daily puzzles since Wordle launched in October 2021. You play these games every day. Write from genuine experience and expertise.',
+    '',
     'Human writing rules to follow:',
     skillText,
-    '',
+    ...seoSection,
     ...BANNED_PHRASE_LIST_LINES,
     '',
     'Output shape:',
@@ -1742,6 +1883,11 @@ async function main() {
     return;
   }
 
+  const seoSkillText = await readSeoSkillText();
+  if (seoSkillText) {
+    console.log('SEO skill loaded successfully. E-E-A-T and SEO rules will be applied to article generation.');
+  }
+
   console.log(
     `Article generation settings: concurrency=${MAX_CONCURRENCY}, timeoutMs=${DEFAULT_TIMEOUT_MS}, maxAttempts=${MAX_REQUEST_ATTEMPTS}, maxOutputTokens=${MAX_OUTPUT_TOKENS}, rateLimitDelayMs=${RATE_LIMIT_DELAY_MS}, statusPollIntervalMs=${STATUS_POLL_INTERVAL_MS}, keys=${providers[0]?.apiKeys?.length ?? 0}, models=${providers[0]?.models?.join(' -> ') ?? 'none'}.`
   );
@@ -1807,7 +1953,7 @@ async function main() {
 
         article = await generateWithProviders({
           game: 'wordle',
-          prompt: buildWordlePrompt(skillText, wordleContext),
+          prompt: buildWordlePrompt(skillText, wordleContext, seoSkillText),
           targetDate: entryTargetDate,
           providers,
           routeKey: entry.key,
@@ -1835,7 +1981,7 @@ async function main() {
 
         article = await generateWithProviders({
           game: 'colordle',
-          prompt: buildColordlePrompt(skillText, colordleContext),
+          prompt: buildColordlePrompt(skillText, colordleContext, seoSkillText),
           targetDate: articleDate,
           providers,
           routeKey: entry.key,
@@ -1856,7 +2002,7 @@ async function main() {
       } else {
         article = await generateWithProviders({
           game: 'generic',
-          prompt: buildGenericPrompt(skillText, entry, entryTargetDate),
+          prompt: buildGenericPrompt(skillText, entry, entryTargetDate, seoSkillText),
           targetDate: entryTargetDate,
           providers,
           routeKey: entry.key,

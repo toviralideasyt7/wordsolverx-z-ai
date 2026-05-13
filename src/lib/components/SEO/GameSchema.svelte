@@ -6,7 +6,7 @@
     description,
     url,
     image = 'https://wordsolverx.com/wordsolverx.webp',
-    authorName = 'Wordle Solver',
+    authorName = 'Preston Hayes',
     datePublished = '2026-01-01',
     genre = ['Puzzle', 'Word Game'],
   }: {

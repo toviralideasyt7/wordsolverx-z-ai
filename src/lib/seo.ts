@@ -178,6 +178,7 @@ export function generateArticleSchema(config: {
     authorJobTitle?: string;
     authorDescription?: string;
     authorKnowsAbout?: string[];
+    authorSameAs?: string[];
 }): SchemaArticle {
     const today = new Date().toISOString().split('T')[0];
     return {
@@ -197,6 +198,7 @@ export function generateArticleSchema(config: {
             ...(config.authorJobTitle && { jobTitle: config.authorJobTitle }),
             ...(config.authorDescription && { description: config.authorDescription }),
             ...(config.authorKnowsAbout && { knowsAbout: config.authorKnowsAbout }),
+            ...(config.authorSameAs && { sameAs: config.authorSameAs }),
         },
         publisher: {
             '@type': 'Organization',

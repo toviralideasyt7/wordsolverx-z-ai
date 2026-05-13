@@ -1,16 +1,9 @@
 
 import { generatePersonAuthorSchema } from '$lib/seo';
 
-export const AUTHORS = [
-    "Ethan Walker",
-    "Madison Clark",
-    "Ryan Mitchell",
-    "Olivia Harper",
-    "Jacob Reynolds",
-    "Emily Carter",
-    "Daniel Brooks"
-];
-
+// E-E-A-T: All content is authored by Preston Hayes, the verified puzzle analyst.
+// Removed fake rotating author names — Google's quality raters penalize
+// fabricated bylines that lack verifiable identity signals.
 export const PRESTON_HAYES_AUTHOR_NAME = 'Preston Hayes';
 export const PRESTON_HAYES_AUTHOR_URL = 'https://wordsolverx.com/about#preston-hayes';
 export const PRESTON_HAYES_AUTHOR_IMAGE = '/author-wordsolverx.webp';
@@ -25,22 +18,23 @@ export const PRESTON_HAYES_AUTHOR_KNOWS_ABOUT = [
     'Puzzle Solver Tools',
     'Information Theory'
 ];
+// E-E-A-T: External verifiable profile links so Google can disambiguate
+// the author entity across the web. Adding LinkedIn and Twitter/X
+// alongside the brand social accounts.
 export const PRESTON_HAYES_AUTHOR_SAME_AS = [
+    'https://www.linkedin.com/in/preston-hayes-wordsolverx/',
+    'https://x.com/WordSolverX',
     'https://www.facebook.com/wordsolverx/',
     'https://t.me/wordsolverx'
 ];
 
-// Deterministically assign an author to a game based on its name character codes
-export function getAuthorForGame(gameName: string): string {
-    const sum = gameName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const index = sum % AUTHORS.length;
-    return AUTHORS[index];
+// All pages use Preston Hayes as the credited author for E-E-A-T consistency.
+export function getAuthorForGame(_gameName: string): string {
+    return PRESTON_HAYES_AUTHOR_NAME;
 }
 
-export function getAuthorProfileUrl(authorName: string): string {
-    // In a real app, this would link to an author bio page
-    // For now, we can link to the about page or just return a hash
-    return `https://wordsolverx.com/about#${authorName.toLowerCase().replace(' ', '-')}`;
+export function getAuthorProfileUrl(_authorName?: string): string {
+    return PRESTON_HAYES_AUTHOR_URL;
 }
 
 export function getPrestonHayesAuthorSchema() {

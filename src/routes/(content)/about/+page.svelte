@@ -149,6 +149,21 @@
       For games where the answer source is an API that we can't decode from the client side (like Contexto, which uses a proprietary word embedding model), we use automated scripts that fetch the daily answer at the appropriate time and store it for our pages. These scripts run as part of the build process, so the answer is available by the time the page is served.
     
 
+    <h2 class="text-slate-900 dark:text-slate-50">Content Methodology</h2>
+
+    <p>
+      Every piece of content on WordSolverX follows a clear methodology designed to keep information accurate and trustworthy. Answer data is always sourced from the official game itself — either decoded from client-side JavaScript, pulled from verified API endpoints, or extracted from the game's own databases. We never rely on user submissions, third-party forums, or unverified sources for core answer data. When a game changes its answer list or algorithm, our automated scripts pick up the change at the next build cycle, which typically runs within hours of the game's update.
+    </p>
+
+    <p>
+      The contextual articles attached to daily answer pages are drafted using AI language models, then reviewed and edited by Preston Hayes before publication. These articles are for context and entertainment — they describe the puzzle's word, explain why it might have been tricky, or offer strategy tips. The answers themselves are never determined or influenced by AI. They come strictly from the game's source data. For full details on how we use AI tools and our editorial oversight process, see the <a href="/editorial-policy">Editorial Policy</a>.
+    </p>
+
+    <p>
+      Solver tools are tested against known puzzle solutions to verify accuracy. When a solver's word list or algorithm produces incorrect results, we treat it as a bug with the same priority as a wrong answer. We maintain test cases for the most-used solvers and run validation checks as part of the build process.
+    </p>
+
+
     <h2 class="text-slate-900 dark:text-slate-50">Independent Status</h2>
 
     <p>
