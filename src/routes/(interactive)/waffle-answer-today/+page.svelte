@@ -1,6 +1,7 @@
 <script lang="ts">
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import WaffleAnswerCard from '$lib/components/WaffleAnswerCard.svelte';
+  import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import FiArrowRight from '$lib/components/icons/FiArrowRight.svelte';
   import FiHash from '$lib/components/icons/FiHash.svelte';
@@ -278,6 +279,7 @@
     </section>
   </article>
 
+  <GeneratedTodayArticle articleKey="waffle-answer-today" articleDate={data.dateKey} />
   <InternalLinkSection currentGame="Waffle" />
 
 

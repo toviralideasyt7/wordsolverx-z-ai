@@ -3,6 +3,7 @@
         import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
         import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
+  import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
         import { PRESTON_HAYES_AUTHOR_NAME, PRESTON_HAYES_AUTHOR_IMAGE, PRESTON_HAYES_AUTHOR_DESCRIPTION } from '$lib/authors';
 
         let { data }: {
@@ -375,6 +376,7 @@
                 </article>
 
                 <div class="mt-12">
+                        <GeneratedTodayArticle articleKey="worgle-answer-today" articleDate={data.todayKey} />
                         <AuthorCard
                                 name={PRESTON_HAYES_AUTHOR_NAME}
                                 image={PRESTON_HAYES_AUTHOR_IMAGE}

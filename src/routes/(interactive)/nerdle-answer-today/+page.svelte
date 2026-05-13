@@ -1,6 +1,7 @@
 <script lang="ts">
         import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
+  import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
         import type { NerdleModeData } from '$lib/nerdle-answers';
         import {
                 PRESTON_HAYES_AUTHOR_DESCRIPTION,
@@ -14,11 +15,11 @@
         let h1Title = $derived(`Nerdle Answer Today ( ${data.formattedDate} )`);
         let modes = $derived((data.answerData?.modes ?? []) as NerdleModeData[]);
 
-	function getTileStyle(_char: string, index: number): string {
-		const background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-		const shadow = '0 4px 20px rgba(16, 185, 129, 0.4)';
-		return `animation-delay: ${index * 100}ms; background: ${background}; box-shadow: ${shadow};`;
-	}
+        function getTileStyle(_char: string, index: number): string {
+                const background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                const shadow = '0 4px 20px rgba(16, 185, 129, 0.4)';
+                return `animation-delay: ${index * 100}ms; background: ${background}; box-shadow: ${shadow};`;
+        }
 
         async function copyText(text: string, token: string): Promise<void> {
                 await navigator.clipboard.writeText(text);
@@ -177,6 +178,7 @@
                                 </div>
                         </section>
 
+                        <GeneratedTodayArticle articleKey="nerdle-answer-today" articleDate={data.answerData.date} />
                         <AuthorCard
                                 name={PRESTON_HAYES_AUTHOR_NAME}
                                 image={PRESTON_HAYES_AUTHOR_IMAGE}

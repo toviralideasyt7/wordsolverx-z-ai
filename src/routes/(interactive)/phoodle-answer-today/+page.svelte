@@ -2,6 +2,7 @@
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import PhoodleAnswerCard from '$lib/components/PhoodleAnswerCard.svelte';
+  import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
   import {
     PRESTON_HAYES_AUTHOR_DESCRIPTION,
     PRESTON_HAYES_AUTHOR_IMAGE,
@@ -186,6 +187,7 @@
         </section>
       </article>
 
+      <GeneratedTodayArticle articleKey="phoodle-answer-today" articleDate={data.dateKey} />
       <div class="mb-12">
         <AuthorCard
           name={PRESTON_HAYES_AUTHOR_NAME}

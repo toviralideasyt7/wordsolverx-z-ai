@@ -1,5 +1,7 @@
 <script lang="ts">
   import GameDleAnswerPage from '$lib/components/GameDleAnswerPage.svelte';
+  import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
+  import { getMainDailyDateKey } from '$lib/main-daily-date';
 
   let { data }: { data: { answers: any[]; dateStr: string; error: string | null; } } = $props();
 
@@ -26,6 +28,7 @@
     ]},
     { '@type': 'Article', headline: 'Dotadle Answer Today', description: "Today's Dotadle hero revealed — Classic, Ability, Item, and Quote mode answers. Check your guess or jump to the solver.", mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://wordsolverx.com/dotadle-answer-today' }, author: { '@type': 'Person', name: 'Preston Hayes', image: 'https://wordsolverx.com/author-wordsolverx.webp', url: 'https://wordsolverx.com/about#preston-hayes' }, publisher: { '@type': 'Organization', name: 'WordSolverX', logo: { '@type': 'ImageObject', url: 'https://wordsolverx.com/images/dotadle-answer-today.webp' } } },
   ]};
+  const todayKey = getMainDailyDateKey();
 </script>
 
 <GameDleAnswerPage gameKey="dotadle" gameTitle="Dotadle" apiGame="dotadle" {modes} {modeConfig} {crossLinks} {schemas} {data}>
@@ -83,6 +86,7 @@
         </div>
       </section>
     </article>
+    <GeneratedTodayArticle articleKey="dotadle-answer-today" articleDate={todayKey} />
   {/snippet}
 </GameDleAnswerPage>
 

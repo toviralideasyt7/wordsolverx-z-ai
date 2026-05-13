@@ -43,6 +43,7 @@ export const load: PageServerLoad = async ({ setHeaders }) => {
         description,
         recipe_name,
         formattedDate,
+        dateKey: data.date.toISOString().split('T')[0],
         last10Days,
         schemas: JSON.stringify([faqSchema]),
         meta: {

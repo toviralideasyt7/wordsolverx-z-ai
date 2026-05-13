@@ -3,6 +3,7 @@
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
   import FAQSection from '$lib/components/FAQSection.svelte';
+  import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
   import WorldleCountryCard from '$lib/components/worldle/WorldleCountryCard.svelte';
   import {
     PRESTON_HAYES_AUTHOR_DESCRIPTION,
@@ -173,6 +174,7 @@
       </section>
     </article>
 
+    <GeneratedTodayArticle articleKey="worldle-answer-today" articleDate={data.todayDate} />
     <div class="mt-12">
       <AuthorCard
         name={PRESTON_HAYES_AUTHOR_NAME}

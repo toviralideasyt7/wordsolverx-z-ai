@@ -49,6 +49,7 @@ export const load: PageServerLoad = async ({ setHeaders }) => {
         error: false,
         formattedDate, puzzle, solution, words, definitions, number,
         prevSlug, nextSlug, showNext, date: data.date,
+        dateKey: data.date.toISOString().split('T')[0],
         schemas: jsonLd,
         meta: {
             title: pageTitle,

@@ -3,6 +3,7 @@
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
   import FAQSection from '$lib/components/FAQSection.svelte';
+  import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
   import { formatBetweenleDate } from '$lib/betweenle/logic';
   import type { BetweenleDailyAnswer } from '$lib/betweenle/types';
   import { WORD_GAMES_BETWEENLE_UNLIMITED_URL } from '$lib/word-games-links';
@@ -323,6 +324,7 @@
     </section>
   </article>
 
+    <GeneratedTodayArticle articleKey="betweenle-answer-today" articleDate={data.todayAnswer.date} />
     <div class="mx-auto mt-12 max-w-4xl px-4 sm:px-6 lg:px-8">
       <AuthorCard
         name={PRESTON_HAYES_AUTHOR_NAME}

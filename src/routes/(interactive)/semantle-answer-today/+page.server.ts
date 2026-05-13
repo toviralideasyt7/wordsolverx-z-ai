@@ -1,11 +1,12 @@
 import { getTodaySemantleData, getSemantleDataForDate } from '$lib/semantle';
-import { subDays } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import { getPuzzleDateForGame } from '$lib/puzzle-window';
 import { fetchDatamuseClues } from '$lib/datamuse';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch }) => {
     const today = getPuzzleDateForGame('semantle');
+    const dateKey = format(today, 'yyyy-MM-dd');
     const data = getTodaySemantleData();
 
     if (!data) {
@@ -31,6 +32,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
 
     const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': [{ '@type': 'FAQPage', mainEntity: faqItems }, { '@type': 'Article', headline: pageTitle, description: pageDescription, datePublished: new Date(formattedDate).toISOString(), author: { '@type': 'Person', name: 'Preston Hayes', image: 'https://wordsolverx.com/author-wordsolverx.webp', url: 'https://wordsolverx.com/about#preston-hayes' } }] });
 
-    return { word, puzzleNumber, formattedDate, last10Days, clues, schemas: jsonLd, meta: { title: pageTitle, description: pageDescription, keywords: pageKeywords } };
+    return { word, puzzleNumber, formattedDate, dateKey, last10Days, clues, schemas: jsonLd, meta: { title: pageTitle, description: pageDescription, keywords: pageKeywords } };
 };
 

@@ -1,6 +1,7 @@
 <script lang="ts">
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import FAQSection from '$lib/components/FAQSection.svelte';
+  import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import {
     formatContextoDate,
@@ -344,6 +345,7 @@
       </section>
     </article>
 
+    <GeneratedTodayArticle articleKey="contexto-answer-today" articleDate={activeDate} />
     <div class="mt-12">
       <AuthorCard
         name={PRESTON_HAYES_AUTHOR_NAME}

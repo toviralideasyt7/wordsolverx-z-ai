@@ -2,11 +2,14 @@
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import { PRESTON_HAYES_AUTHOR_NAME, PRESTON_HAYES_AUTHOR_IMAGE, PRESTON_HAYES_AUTHOR_DESCRIPTION } from '$lib/authors';
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+  import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import { getContrastColor } from '$lib/colorfle';
+  import { getMainDailyDateKey } from '$lib/main-daily-date';
 
   let { data } = $props();
   let revealed = $state(false);
+  const todayKey = getMainDailyDateKey();
 
   function formatEntryDate(isoDate: string) {
     const d = new Date(isoDate + 'T00:00:00');
@@ -302,6 +305,7 @@
 
     </article>
 
+    <GeneratedTodayArticle articleKey="colorfle-answer-today" articleDate={todayKey} />
     <div class="mt-8">
       <AuthorCard
         name={PRESTON_HAYES_AUTHOR_NAME}

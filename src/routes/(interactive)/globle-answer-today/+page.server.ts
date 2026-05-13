@@ -13,6 +13,7 @@ export const load: PageServerLoad = async () => {
     }
 
     const { country, formattedDate, date } = data;
+    const dateKey = date instanceof Date ? format(date, 'yyyy-MM-dd') : String(date).split('T')[0];
     const featuredImage = 'https://wordsolverx.com/images/globle-answer-today.webp';
     const pageTitle = `Globle Answer Today (${formattedDate}) - Country Answer and Hints`;
     const pageDescription = `Today's Globle country revealed — ${formattedDate}. Use the color feedback, continent, subregion, and flag hints to narrow it down, or check the answer directly.`;
@@ -42,6 +43,7 @@ export const load: PageServerLoad = async () => {
     return {
         country,
         formattedDate,
+        dateKey,
         schemas: jsonLd,
         meta: {
             title: pageTitle,

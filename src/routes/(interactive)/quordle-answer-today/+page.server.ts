@@ -7,6 +7,7 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async () => {
     const today = getPuzzleDateForGame('quordle');
     const formattedDate = format(today, 'MMMM d, yyyy');
+    const dateKey = format(today, 'yyyy-MM-dd');
     const todayData = getQuordleToday();
     const todayWords = todayData ? todayData.d.join(', ').replace(/, ([^,]*)$/, ', and $1') : '';
 
@@ -50,6 +51,7 @@ export const load: PageServerLoad = async () => {
     return {
         today,
         formattedDate,
+        dateKey,
         todayData,
         todayWords,
         last10Days,
