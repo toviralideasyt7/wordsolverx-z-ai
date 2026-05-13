@@ -8,6 +8,8 @@
     getContextoTodayDate
   } from '$lib/contexto';
   import {
+    generateArticleSchema,
+    generateBreadcrumbSchema,
     generateFAQSchema,
     generateHowToSchema,
     generateWebPageSchema
@@ -15,7 +17,12 @@
   import {
     PRESTON_HAYES_AUTHOR_DESCRIPTION,
     PRESTON_HAYES_AUTHOR_IMAGE,
-    PRESTON_HAYES_AUTHOR_NAME
+    PRESTON_HAYES_AUTHOR_IMAGE_URL,
+    PRESTON_HAYES_AUTHOR_NAME,
+    PRESTON_HAYES_AUTHOR_JOB_TITLE,
+    PRESTON_HAYES_AUTHOR_KNOWS_ABOUT,
+    PRESTON_HAYES_AUTHOR_SAME_AS,
+    PRESTON_HAYES_AUTHOR_URL
   } from '$lib/authors';
 
   interface ContextoAnswer {
@@ -110,6 +117,31 @@
       'https://wordsolverx.com/contexto-answer-today'
     )
   );
+
+  // E-E-A-T: Article schema with Person author (not Organization)
+  let articleSchema = $derived(
+    generateArticleSchema({
+      headline: metaTitle,
+      description: pageDescription,
+      url: 'https://wordsolverx.com/contexto-answer-today',
+      image: 'https://wordsolverx.com/images/contexto-answer-today.webp',
+      datePublished: activeDate,
+      dateModified: activeDate,
+      authorName: PRESTON_HAYES_AUTHOR_NAME,
+      authorImage: PRESTON_HAYES_AUTHOR_IMAGE_URL,
+      authorJobTitle: PRESTON_HAYES_AUTHOR_JOB_TITLE,
+      authorDescription: PRESTON_HAYES_AUTHOR_DESCRIPTION,
+      authorKnowsAbout: PRESTON_HAYES_AUTHOR_KNOWS_ABOUT,
+      authorSameAs: PRESTON_HAYES_AUTHOR_SAME_AS,
+    })
+  );
+
+  // Breadcrumb schema for navigation
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: 'https://wordsolverx.com' },
+    { name: 'Today', url: 'https://wordsolverx.com/today' },
+    { name: 'Contexto Answer Today', url: 'https://wordsolverx.com/contexto-answer-today' },
+  ]);
 </script>
 
 <svelte:head>
@@ -118,15 +150,21 @@
   <meta name="keywords" content={pageKeywords} />
   <meta property="og:title" content={metaTitle} />
   <meta property="og:description" content={pageDescription} />
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content="article" />
   <meta property="og:url" content="https://wordsolverx.com/contexto-answer-today" />
   <meta property="og:site_name" content="WordSolverX" />
   <meta property="og:image" content="https://wordsolverx.com/images/contexto-answer-today.webp" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Contexto Answer Today" />
+  <meta property="article:published_time" content={activeDate} />
+  <meta property="article:modified_time" content={activeDate} />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={metaTitle} />
   <meta name="twitter:description" content={pageDescription} />
   <link rel="canonical" href="https://wordsolverx.com/contexto-answer-today" />
-  {@html `<script type="application/ld+json">${JSON.stringify(webPageSchema)}</script>`}
+  {@html `<script type="application/ld+json">${JSON.stringify(articleSchema)}</script>`}
+  {@html `<script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>`}
   {@html `<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>`}
   {@html `<script type="application/ld+json">${JSON.stringify(howToSchema)}</script>`}
 </svelte:head>

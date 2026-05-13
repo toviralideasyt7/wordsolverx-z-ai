@@ -80,8 +80,18 @@ export const load: PageServerLoad = async ({ setHeaders, platform, fetch }) => {
                         dateModified: `${answerData.date}T00:00:00+09:00`,
                         mainEntityOfPage: 'https://wordsolverx.com/nerdle-answer-today',
                         author: {
-                                '@type': 'Organization',
-                                name: 'WordSolverX'
+                                '@type': 'Person',
+                                name: 'Preston Hayes',
+                                url: 'https://wordsolverx.com/about#preston-hayes',
+                                image: 'https://wordsolverx.com/author-wordsolverx.webp',
+                                jobTitle: 'Word Puzzle Analyst',
+                                knowsAbout: ['Wordle', 'Word Puzzles', 'Daily Puzzle Answers', 'Puzzle Solver Tools', 'Information Theory'],
+                                sameAs: [
+                                        'https://www.linkedin.com/in/preston-hayes-wordsolverx/',
+                                        'https://x.com/WordSolverX',
+                                        'https://www.facebook.com/wordsolverx/',
+                                        'https://t.me/wordsolverx'
+                                ]
                         },
                         publisher: {
                                 '@type': 'Organization',

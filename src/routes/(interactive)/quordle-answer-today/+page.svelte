@@ -17,6 +17,19 @@
   <meta name="description" content={data.meta.description} />
   <meta name="news_keywords" content={data.meta.keywords ?? 'quordle answer today, quordle answer, quordle hint, quordle hint today'} />
   <link rel="canonical" href="https://wordsolverx.com/quordle-answer-today" />
+  <meta property="og:title" content={data.meta.title} />
+  <meta property="og:description" content={data.meta.description} />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://wordsolverx.com/quordle-answer-today" />
+  <meta property="og:site_name" content="WordSolverX" />
+  <meta property="og:image" content="https://wordsolverx.com/images/quordle-answer-today.webp" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Quordle Answer Today" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={data.meta.title} />
+  <meta name="twitter:description" content={data.meta.description} />
+  <meta name="twitter:image" content="https://wordsolverx.com/images/quordle-answer-today.webp" />
   {@html `<script type="application/ld+json">${data.schemas}</script>`}
 </svelte:head>
 

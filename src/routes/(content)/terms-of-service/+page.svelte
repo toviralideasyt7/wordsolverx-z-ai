@@ -46,24 +46,38 @@
       <h2>1. Acceptance of Terms</h2>
       <p>
         By accessing or using https://wordsolverx.com, you agree to these Terms and Conditions. If
-        you do not agree, please do not use the site.
-      
+        you do not agree, please do not use the site. These terms apply to all visitors, regardless
+        of how you accessed the site or which pages you view. We may update these terms from time to
+        time, and continued use of the site after any changes constitutes acceptance of the revised
+        terms. It is your responsibility to review these terms periodically for updates.
+      </p>
 
       <h2>2. Website Purpose</h2>
       <p>
         WordSolverX provides puzzle answer pages, archives, guides, and solver tools for
         informational and entertainment purposes. The site is intended to help users explore puzzle
-        content, review past answers, and use solving tools more easily.
-      
+        content, review past answers, and use solving tools more easily. We cover over 20 daily
+        puzzle games including Wordle, Quordle, Nerdle, Worldle, Contexto, Betweenle, and many
+        others. Each game has its own dedicated answer page, archive, and (in most cases) an
+        interactive solver tool. Everything on the site is free to use and does not require account
+        creation or sign-up.
+      </p>
 
       <h2>3. Acceptable Use</h2>
       <p>You agree not to misuse the site. This includes, without limitation:
       <ul>
-        <li>Trying to disrupt, damage, or overload the website or its infrastructure</li>
-        <li>Attempting unauthorized access to data, accounts, or systems</li>
-        <li>Using automated scraping or abusive traffic in a way that harms site availability</li>
-        <li>Copying site content in bulk for deceptive or competing uses</li>
+        <li>Trying to disrupt, damage, or overload the website or its infrastructure through denial-of-service attacks, excessive automated requests, or other means</li>
+        <li>Attempting unauthorized access to data, accounts, or systems, including trying to access admin panels, databases, or internal APIs that are not publicly intended for use</li>
+        <li>Using automated scraping or abusive traffic in a way that harms site availability for other users — this includes running bots that request hundreds of pages per second or scraping the entire site content for redistribution</li>
+        <li>Copying site content in bulk for deceptive or competing uses, such as republishing our answer pages on another website without attribution or creating a derivative service that directly mirrors our content and functionality</li>
+        <li>Using the site in any way that violates applicable laws or regulations in your jurisdiction</li>
       </ul>
+      <p>
+        We reserve the right to restrict access to users or automated systems that violate these
+        guidelines. In most cases, we will attempt to contact you before taking action, but we may
+        implement technical restrictions without prior notice if the misuse is causing immediate harm
+        to the site or its users.
+      </p>
 
       <h2>4. Intellectual Property and Trademarks</h2>
       <p>

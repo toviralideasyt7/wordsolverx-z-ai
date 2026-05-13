@@ -1,5 +1,5 @@
 import { getQuordleToday, getQuordleDataForDate } from '$lib/quordle';
-import { generatePersonAuthorSchema } from '$lib/seo';
+import { generateBreadcrumbSchema, generatePersonAuthorSchema } from '$lib/seo';
 import { format, subDays } from 'date-fns';
 import { getPuzzleDateForGame } from '$lib/puzzle-window';
 import type { PageServerLoad } from './$types';
@@ -39,6 +39,11 @@ export const load: PageServerLoad = async () => {
                 description: pageDescription,
                 mainEntityOfPage: { '@type': 'WebPage', '@id': 'https://wordsolverx.com/quordle-answer-today' },
             },
+            generateBreadcrumbSchema([
+                { name: 'Home', url: 'https://wordsolverx.com' },
+                { name: 'Today', url: 'https://wordsolverx.com/today' },
+                { name: 'Quordle Answer Today', url: 'https://wordsolverx.com/quordle-answer-today' },
+            ]),
         ],
     };
 
