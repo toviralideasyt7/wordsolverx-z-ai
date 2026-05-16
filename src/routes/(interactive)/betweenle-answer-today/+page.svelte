@@ -1,4 +1,6 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
@@ -6,7 +8,6 @@
   import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
   import { formatBetweenleDate } from '$lib/betweenle/logic';
   import type { BetweenleDailyAnswer } from '$lib/betweenle/types';
-  import { WORD_GAMES_BETWEENLE_UNLIMITED_URL } from '$lib/word-games-links';
   import {
     PRESTON_HAYES_AUTHOR_DESCRIPTION,
     PRESTON_HAYES_AUTHOR_IMAGE,
@@ -112,6 +113,7 @@
   );
 
   let showAnswer = $state(false);
+  const publishedDate = $derived(`${data.todayAnswer.date}T00:00:00Z`);
 
   let clueCards = $derived([
     { label: 'Word Length', value: `${data.todayAnswer.word.length} letters` },
@@ -142,6 +144,9 @@
   <meta name="twitter:image" content="https://wordsolverx.com/images/betweenle-answer-today.webp" />
   {@html `<script type="application/ld+json">${schemas}</script>`}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Betweenle" answer={answerWord} />
 
 <main class="min-h-screen bg-slate-50 text-slate-900">
   <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
@@ -204,16 +209,8 @@
           Try the clues first. When you want the official word, use the reveal button below.
         </p>
 
-        {#if !showAnswer}
-          <button
-            class="mt-5 inline-flex items-center justify-center rounded-2xl bg-teal-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-teal-500  "
-            onclick={() => (showAnswer = true)}
-            type="button"
-          >
-            Reveal Today&apos;s Answer
-          </button>
-        {:else}
-          <div class="mt-5 rounded-2xl border border-teal-200 bg-teal-50 px-5 py-6">
+        <div class="mt-5 rounded-2xl border border-teal-200 bg-teal-50 px-5 py-6">
+          <div class="betweenle-answer-content" class:revealed={showAnswer}>
             <p class="text-xs font-bold uppercase tracking-[0.18em] text-teal-700">Official Betweenle answer</p>
             <p class="mt-3 text-4xl font-black uppercase tracking-[0.18em] text-slate-900 sm:text-5xl">
               {answerWord}
@@ -222,6 +219,16 @@
               Answer for {data.todayLabel} and Betweenle puzzle #{data.todayAnswer.puzzleNumber}.
             </p>
           </div>
+        </div>
+
+        {#if !showAnswer}
+          <button
+            class="mt-5 inline-flex items-center justify-center rounded-2xl bg-teal-600 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-teal-500  "
+            onclick={() => (showAnswer = true)}
+            type="button"
+          >
+            Reveal Today&apos;s Answer
+          </button>
         {/if}
       </div>
     </section>
@@ -263,10 +270,10 @@
           Betweenle Solver
         </a>
         <a
-          href={WORD_GAMES_BETWEENLE_UNLIMITED_URL}
+          href="/betweenle-solver"
           class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-center text-sm font-bold text-slate-800 transition-colors hover:bg-slate-50"
         >
-          Play Betweenle Unlimited
+          Practice With Solver
         </a>
         <a
           href="/today"
@@ -336,4 +343,16 @@
     </div>
 </main>
 
+<style>
+  .betweenle-answer-content {
+    filter: blur(10px);
+    transition: filter 0.3s ease;
+    user-select: none;
+  }
+
+  .betweenle-answer-content.revealed {
+    filter: none;
+    user-select: auto;
+  }
+</style>
 

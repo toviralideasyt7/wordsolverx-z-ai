@@ -1,4 +1,6 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import FAQSection from '$lib/components/FAQSection.svelte';
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
@@ -48,6 +50,7 @@
   }
 
   const todayLabel = $derived(formatDisplayDate(data.todayPuzzle.date));
+  const publishedDate = $derived(`${data.todayPuzzle.date}T00:00:00Z`);
   const metaTitle = $derived(`Searchle Answer Today (${todayLabel}) - Prompt and Answer`);
   const pageTitle = $derived(`Searchle Answer Today (${todayLabel})`);
   const pageDescription = $derived(
@@ -107,7 +110,7 @@
   <meta name="keywords" content={pageKeywords} />
   <meta property="og:title" content={metaTitle} />
   <meta property="og:description" content={pageDescription} />
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content="article" />
   <meta property="og:url" content="https://wordsolverx.com/searchle-answer-today" />
   <meta property="og:site_name" content="WordSolverX" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -116,6 +119,9 @@
   {@html `<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>`}
   {@html `<script type="application/ld+json">${JSON.stringify(howToSchema)}</script>`}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Searchle" answer={todayPuzzle.answer.toUpperCase()} />
 
 <div class="min-h-screen bg-slate-50">
   <main class="max-w-5xl mx-auto px-4 py-8">

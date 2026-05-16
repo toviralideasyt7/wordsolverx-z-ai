@@ -1,4 +1,6 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import PhoodleAnswerCard from '$lib/components/PhoodleAnswerCard.svelte';
@@ -15,6 +17,7 @@
     data.meta?.description ??
       "Get today's Phoodle answer, food-themed hints, recent solutions, and the latest verified daily update from WordSolverX."
   );
+  const publishedDate = $derived(data.dateKey ? `${data.dateKey}T00:00:00Z` : null);
   let pageSchema = $derived(JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -44,6 +47,9 @@
     {@html `<script type="application/ld+json">${data.schemas}</script>`}
   {/if}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Phoodle" answer={data.upperWord ?? null} />
 
 {#if data.error || !data.word}
   <div class="min-h-screen bg-slate-50 flex items-center justify-center">

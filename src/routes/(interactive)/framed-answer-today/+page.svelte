@@ -1,4 +1,6 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
   import FramedAnswerCard from '$lib/components/FramedAnswerCard.svelte';
@@ -13,6 +15,12 @@
 
   let { data } = $props();
   const todayKey = getMainDailyDateKey();
+  const publishedDate = `${todayKey}T00:00:00Z`;
+  const noscriptAnswer = $derived.by(() =>
+    data.hasExactEntries
+      ? data.entries.map((entry) => `${entry.game}: ${entry.answer}`).join(' | ')
+      : null
+  );
 </script>
 
 <svelte:head>
@@ -32,6 +40,9 @@
   <meta name="twitter:image" content={`https://wordsolverx.com${data.meta.featuredImage}`} />
   {@html `<script type="application/ld+json">${data.schemas}</script>`}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Framed" answer={noscriptAnswer} />
 
 <div class="bg-slate-50 min-h-screen py-12">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">

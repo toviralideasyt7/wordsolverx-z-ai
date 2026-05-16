@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { getQuordleDataForDate } from '$lib/quordle';
+  import { getQuordleDataForDate, type QuordleData } from '$lib/quordle';
   import { format } from 'date-fns';
 
-  let { date }: { date: Date } = $props();
+  let { date, initialData = null }: { date: Date; initialData?: QuordleData | null } = $props();
 
-  let data = $state<{
-    d: string[], c: string[], e: string[], s: string[], r: string[], w: string[],
-    dN: number, cN: number, eN: number, sN: number, rN: number, wN: number
-  } | null>(null);
+  let data = $state<QuordleData | null>(null);
   let viewAnswers = $state<Record<string, boolean>>({});
-  let mounted = $state(false);
 
   $effect(() => {
-    mounted = true;
+    if (initialData) {
+      data = initialData;
+      return;
+    }
+
     data = getQuordleDataForDate(date);
   });
 
@@ -104,12 +104,12 @@
             </button>
           </div>
 
-          {#if viewAnswers[mode.type]}
-            <div class="mt-12">
+          <div class="quordle-answer-spoiler mt-12" class:revealed={viewAnswers[mode.type]}>
+            <div class="answer-content">
               <div class="text-center mb-8">
                 <div class="text-2xl font-bold text-slate-900 dark:text-white mb-2">{mode.title} Answers for {mode.num}</div>
                 <p class="text-slate-500 dark:text-slate-400">
-                  {#if mounted}for {format(date, 'EEEE, MMMM d, yyyy')}{/if}
+                  for {format(date, 'EEEE, MMMM d, yyyy')}
                 </p>
               </div>
               <div class="grid grid-cols-2 gap-4 max-w-md mx-auto">
@@ -120,9 +120,22 @@
                 {/each}
               </div>
             </div>
-          {/if}
+          </div>
         </div>
       {/if}
     {/each}
   </div>
 {/if}
+
+<style>
+  .quordle-answer-spoiler .answer-content {
+    filter: blur(10px);
+    user-select: none;
+    transition: filter 0.3s ease;
+  }
+
+  .quordle-answer-spoiler.revealed .answer-content {
+    filter: none;
+    user-select: auto;
+  }
+</style>

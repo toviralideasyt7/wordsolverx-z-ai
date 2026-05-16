@@ -133,13 +133,15 @@
     .filter((link) => link.name.split(' ')[0] !== currentGame)
     .slice(0, 10);
 
-  const currentGameKey = currentGame.toLowerCase().replace(/\s+/g, '');
-  const relatedGameKeys = (GAME_CLUSTERS[currentGameKey] ?? []).slice(0, 5);
-  const relatedGames = relatedGameKeys.map((key) => ({
-    name: GAME_DISPLAY_NAMES[key] ?? key,
-    href: `/${key}-answer-today`,
-    icon: (GAME_DISPLAY_NAMES[key] ?? key).slice(0, 2)
-  }));
+  const currentGameKey = $derived(currentGame.toLowerCase().replace(/\s+/g, ''));
+  const relatedGameKeys = $derived((GAME_CLUSTERS[currentGameKey] ?? []).slice(0, 5));
+  const relatedGames = $derived(
+    relatedGameKeys.map((key) => ({
+      name: GAME_DISPLAY_NAMES[key] ?? key,
+      href: `/${key}-answer-today`,
+      icon: (GAME_DISPLAY_NAMES[key] ?? key).slice(0, 2)
+    }))
+  );
 </script>
 
 <section class="mt-16 border-t border-slate-200 dark:border-slate-700 pt-12 max-w-4xl mx-auto px-4">

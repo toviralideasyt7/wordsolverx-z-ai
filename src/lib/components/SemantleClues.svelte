@@ -146,13 +146,26 @@
       {#if showAnswer}<FiChevronUp class="text-xl" /> Hide Answer{:else}<FiChevronDown class="text-xl" /> Reveal Answer{/if}
     </button>
 
-    {#if showAnswer}
-      <div class="bg-teal-50 dark:bg-teal-900/20 rounded-2xl p-6 border border-teal-200 dark:border-teal-800/50">
+    <div class="answer-reveal-area" class:revealed={showAnswer}>
+      <div class="answer-text-content bg-teal-50 dark:bg-teal-900/20 rounded-2xl p-6 border border-teal-200 dark:border-teal-800/50">
         <div class="text-center">
           <p class="text-sm text-teal-600 dark:text-teal-400 font-semibold uppercase tracking-wider mb-2">Puzzle #{puzzleNumber} Answer</p>
           <h3 class="text-3xl font-extrabold text-slate-900 dark:text-slate-50 uppercase tracking-widest">{word}</h3>
         </div>
       </div>
-    {/if}
+    </div>
   </div>
 </div>
+
+<style>
+  .answer-text-content {
+    filter: blur(10px);
+    user-select: none;
+    transition: filter 0.3s ease;
+  }
+
+  .answer-reveal-area.revealed .answer-text-content {
+    filter: none;
+    user-select: auto;
+  }
+</style>

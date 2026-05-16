@@ -1,4 +1,6 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import SemantleClues from '$lib/components/SemantleClues.svelte';
   import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
@@ -11,6 +13,7 @@
   } from '$lib/authors';
 
   let { data } = $props();
+  const publishedDate = $derived(`${data.dateKey}T00:00:00Z`);
 </script>
 
 <svelte:head>
@@ -18,10 +21,21 @@
   <meta name="description" content={data.meta?.description ?? ''} />
   <meta name="news_keywords" content={data.meta?.keywords ?? 'semantle answer today, semantle answer, semantle hint, semantle hint today'} />
   <link rel="canonical" href="https://wordsolverx.com/semantle-answer-today" />
+  <meta property="og:title" content={data.meta?.title ?? 'Semantle Answer Today'} />
+  <meta property="og:description" content={data.meta?.description ?? ''} />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://wordsolverx.com/semantle-answer-today" />
+  <meta property="og:site_name" content="WordSolverX" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={data.meta?.title ?? 'Semantle Answer Today'} />
+  <meta name="twitter:description" content={data.meta?.description ?? ''} />
   {#if data.schemas}
     {@html `<script type="application/ld+json">${data.schemas}</script>`}
   {/if}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Semantle" answer={data.word?.toUpperCase() ?? null} />
 
 {#if data.error || !data.word || !data.puzzleNumber}
   <div class="min-h-screen bg-slate-50 dark:bg-slate-800/30 flex items-center justify-center">

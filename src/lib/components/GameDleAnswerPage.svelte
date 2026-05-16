@@ -1,5 +1,6 @@
 <script lang="ts">
   import { type Snippet } from 'svelte';
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
@@ -108,13 +109,45 @@
     ])
   );
 
-  function normalizeStructuredData(input: unknown): unknown {
+  function normalizeStructuredData(input: unknown, isTopLevel: boolean = true): unknown {
     if (typeof input === 'string' || input == null) {
       return input;
     }
 
     if (Array.isArray(input)) {
-      return input.map((item) => normalizeStructuredData(item));
+      if (isTopLevel) {
+        const seen = new Set<string>();
+        const deduped: unknown[] = [];
+
+        for (const item of input) {
+          const normalized = normalizeStructuredData(item, false);
+          if (typeof normalized === 'object' && normalized !== null && !Array.isArray(normalized)) {
+            const record = normalized as Record<string, unknown>;
+            const type = typeof record['@type'] === 'string' ? record['@type'] : '';
+            const label =
+              typeof record.name === 'string'
+                ? record.name
+                : typeof record.headline === 'string'
+                  ? record.headline
+                  : '';
+            const key = `${type}::${label}`;
+
+            if (type && seen.has(key)) {
+              continue;
+            }
+
+            if (type) {
+              seen.add(key);
+            }
+          }
+
+          deduped.push(normalized);
+        }
+
+        return deduped;
+      }
+
+      return input.map((item) => normalizeStructuredData(item, false));
     }
 
     if (typeof input !== 'object') {
@@ -124,7 +157,7 @@
     const normalized: Record<string, unknown> = {};
 
     for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
-      normalized[key] = normalizeStructuredData(value);
+      normalized[key] = normalizeStructuredData(value, false);
     }
 
     const type = normalized['@type'];
@@ -264,6 +297,8 @@
   {@html `<script type="application/ld+json">${resolvedSchemaJson}</script>`}
   {@html `<script type="application/ld+json">${JSON.stringify(breadcrumbSchemaData)}</script>`}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
 
 <div class="min-h-screen bg-slate-100">
   <div class="max-w-6xl mx-auto px-3 sm:px-4 pt-6">

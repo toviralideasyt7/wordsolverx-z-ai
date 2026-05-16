@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { WORD_GAMES_BETWEENLE_UNLIMITED_URL } from '$lib/word-games-links';
   import type { BetweenleSolverResult } from '$lib/betweenle/types';
 
   type BetweenleRuntime = {
@@ -184,9 +183,9 @@
         </button>
         <a
           class="rounded-xl border border-white/15 bg-white/10 px-6 py-3 text-sm font-bold text-white transition-transform hover:scale-[1.02]"
-          href={WORD_GAMES_BETWEENLE_UNLIMITED_URL}
+          href="/betweenle-answer-today"
         >
-          Play Betweenle Unlimited
+          Today&apos;s Answer
         </a>
       </div>
     </div>

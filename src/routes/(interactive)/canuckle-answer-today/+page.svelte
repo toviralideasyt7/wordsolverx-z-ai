@@ -1,9 +1,10 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
   import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
-  import WordlebotWasmClient from '$lib/components/wordlebot/WordlebotWasmClient.svelte';
   import {
     PRESTON_HAYES_AUTHOR_DESCRIPTION,
     PRESTON_HAYES_AUTHOR_IMAGE,
@@ -13,6 +14,7 @@
   let { data } = $props();
 
   const formattedDate = $derived(data.formattedDate ?? 'today');
+  const publishedDate = $derived(`${data.visibleDateKey}T00:00:00Z`);
 </script>
 
 <svelte:head>
@@ -46,6 +48,9 @@
     dateModified: data.todayPuzzle?.date || new Date().toISOString().split('T')[0]
   })}</script>`}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Canuckle" answer={data.todayPuzzle?.answer?.toUpperCase() ?? null} />
 
 {#if data.error || !data.todayPuzzle}
   <div class="min-h-screen flex items-center justify-center p-4">
@@ -146,8 +151,43 @@
         </div>
       </section>
 
-      <section id="today-answer-reveal">
-        <WordlebotWasmClient config={{ pageType: 'canuckle-daily', visibleDateKey: data.visibleDateKey }} />
+      <section id="today-answer-reveal" class="overflow-hidden rounded-3xl border border-teal-100 bg-white shadow-xl">
+        <div class="grid gap-0 lg:grid-cols-[1.15fr_0.85fr]">
+          <div class="p-6 sm:p-8">
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-teal-600">Today&apos;s verified answer</p>
+            <h2 class="mt-3 text-4xl font-black tracking-[0.18em] text-slate-900 sm:text-5xl">
+              {data.todayPuzzle.answer.toUpperCase()}
+            </h2>
+            <p class="mt-4 text-base leading-7 text-slate-600">
+              Puzzle #{data.todayPuzzle.index} for {formattedDate}. This answer is rendered directly in the page HTML for faster crawlability and easier verification.
+            </p>
+
+            <div class="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5">
+              <p class="text-xs font-semibold uppercase tracking-[0.2em] text-amber-700">Canadian fact</p>
+              <p class="mt-3 text-base leading-7 text-slate-700">{data.todayPuzzle.fact}</p>
+            </div>
+          </div>
+
+          <aside class="border-t border-slate-200 bg-slate-50 p-6 sm:p-8 lg:border-l lg:border-t-0">
+            <p class="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Quick actions</p>
+            <div class="mt-5 space-y-3">
+              <a href="/canuckle-solver" class="flex items-center justify-center rounded-2xl bg-teal-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-teal-500">
+                Open Solver
+              </a>
+              <a href="/canuckle-archive" class="flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50">
+                Browse Archive
+              </a>
+            </div>
+
+            <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
+              <p class="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Date key</p>
+              <p class="mt-2 text-lg font-bold text-slate-900">{data.visibleDateKey}</p>
+              <p class="mt-2 text-sm leading-6 text-slate-600">
+                This page now shows the answer directly instead of hiding it behind the client-only daily widget.
+              </p>
+            </div>
+          </aside>
+        </div>
       </section>
 
       <!-- Yesterday's Answer — Light Info Card -->

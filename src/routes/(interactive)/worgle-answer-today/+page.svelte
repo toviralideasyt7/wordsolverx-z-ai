@@ -1,4 +1,6 @@
 <script lang="ts">
+        import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+        import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
         import { onMount } from 'svelte';
         import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
         import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
@@ -20,6 +22,7 @@
 
         let countdown = $state('00:00:00');
         let revealed = $state(false);
+        const publishedDate = $derived(`${data.todayKey}T00:00:00Z`);
 
         function getNextIstMidnight() {
                 const now = new Date();
@@ -63,10 +66,13 @@
         <link rel="canonical" href="https://wordsolverx.com/worgle-answer-today" />
         <meta property="og:title" content={data.meta.title} />
         <meta property="og:description" content={data.meta.description} />
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content="article" />
         <meta property="og:url" content="https://wordsolverx.com/worgle-answer-today" />
         <meta property="og:image" content="https://wordsolverx.com/images/worgle-answer-today.webp" />
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Worgle" answer={data.todayEntry.word.toUpperCase()} />
 
 <div class="min-h-screen bg-slate-50 px-4 py-10 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-5xl">
@@ -103,37 +109,20 @@
                                 </p>
 
                                 <div class="mt-6 rounded-3xl border border-slate-200 bg-slate-50 p-6">
-                                        {#if revealed}
-                                                <div class="flex flex-wrap gap-2">
-                                                        {#each data.todayEntry.word.toUpperCase().split('') as letter}
-                                                                <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-600 text-lg font-black text-white">
-                                                                        {letter}
-                                                                </div>
-                                                        {/each}
-                                                </div>
-                                                <button
-                                                        type="button"
-                                                        class="mt-5 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
-                                                        onclick={() => (revealed = false)}
-                                                >
-                                                        Hide answer
-                                                </button>
-                                        {:else}
-                                                <div class="flex flex-wrap gap-2">
-                                                        {#each data.todayEntry.word.toUpperCase().split('') as _}
-                                                                <div class="flex h-12 w-12 items-center justify-center rounded-2xl border border-slate-300 bg-white text-lg font-black text-slate-300">
-                                                                        ?
-                                                                </div>
-                                                        {/each}
-                                                </div>
-                                                <button
-                                                        type="button"
-                                                        class="mt-5 rounded-full bg-teal-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-500"
-                                                        onclick={() => (revealed = true)}
-                                                >
-                                                        Reveal answer
-                                                </button>
-                                        {/if}
+                                        <div class="flex flex-wrap gap-2 worgle-answer-tiles" class:revealed={revealed}>
+                                                {#each data.todayEntry.word.toUpperCase().split('') as letter}
+                                                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-600 text-lg font-black text-white">
+                                                                {letter}
+                                                        </div>
+                                                {/each}
+                                        </div>
+                                        <button
+                                                type="button"
+                                                class="mt-5 rounded-full bg-teal-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-teal-500"
+                                                onclick={() => (revealed = !revealed)}
+                                        >
+                                                {revealed ? 'Hide answer' : 'Reveal answer'}
+                                        </button>
                                 </div>
 
                                 {#if data.previousEntry}
@@ -387,3 +376,16 @@
                 </div>
         </div>
 </div>
+
+<style>
+        .worgle-answer-tiles {
+                filter: blur(10px);
+                transition: filter 0.3s ease;
+                user-select: none;
+        }
+
+        .worgle-answer-tiles.revealed {
+                filter: none;
+                user-select: auto;
+        }
+</style>

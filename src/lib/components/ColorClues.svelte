@@ -108,14 +108,27 @@
       {/if}
     </button>
 
-    {#if showAnswer}
-      <div class="bg-gradient-to-r from-teal-50 to-teal-50 dark:from-teal-900/20 dark:to-teal-900/20 rounded-2xl p-6 border border-teal-200 dark:border-teal-800/50">
+    <div class="answer-reveal-area" class:revealed={showAnswer}>
+      <div class="answer-text-content bg-gradient-to-r from-teal-50 to-teal-50 dark:from-teal-900/20 dark:to-teal-900/20 rounded-2xl p-6 border border-teal-200 dark:border-teal-800/50">
         <div class="text-center">
           <p class="text-sm text-teal-600 dark:text-teal-400 font-semibold uppercase tracking-wider mb-2">Today's Answer</p>
           <h3 class="text-3xl font-extrabold text-slate-900 dark:text-slate-50 mb-1">{colorName}</h3>
           <p class="font-mono text-lg text-slate-600 dark:text-slate-400">({colorHex})</p>
         </div>
       </div>
-    {/if}
+    </div>
   </div>
 </div>
+
+<style>
+  .answer-text-content {
+    filter: blur(10px);
+    user-select: none;
+    transition: filter 0.3s ease;
+  }
+
+  .answer-reveal-area.revealed .answer-text-content {
+    filter: none;
+    user-select: auto;
+  }
+</style>

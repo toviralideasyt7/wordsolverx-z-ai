@@ -1,4 +1,6 @@
 <script lang="ts">
+        import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+        import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
         import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
         import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
@@ -42,6 +44,7 @@
         const meta = $derived(data.meta);
         const stats = $derived(data.stats);
         const labels = $derived(data.labels);
+        const publishedDate = $derived(`${data.todayAnswer?.date ?? data.todayStr}T00:00:00Z`);
 
         function toSpotifyArtistUrl(uri?: string): string | null {
                 if (!uri?.startsWith('spotify:artist:')) {
@@ -59,7 +62,7 @@
         <link rel="canonical" href="https://wordsolverx.com/spotle-answer-today" />
         <meta property="og:title" content={meta.title} />
         <meta property="og:description" content={meta.description} />
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content="article" />
         <meta property="og:url" content="https://wordsolverx.com/spotle-answer-today" />
         <meta property="og:site_name" content="WordSolverX" />
         <meta property="og:image" content="https://wordsolverx.com/images/spotle-answer-today.webp" />
@@ -68,6 +71,9 @@
         <meta name="twitter:description" content={meta.description} />
         {@html `<script type="application/ld+json">${schemaJson}</script>`}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Spotle" answer={todayArtist?.artist ?? null} />
 
 <div class="min-h-screen bg-slate-50 px-4 py-10 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-6xl">

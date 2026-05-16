@@ -91,6 +91,17 @@
                 </section>
 
                 <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+                        <noscript>
+                                <div class="rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+                                        <p class="text-sm font-bold uppercase tracking-[0.24em] text-teal-600">
+                                                JavaScript disabled
+                                        </p>
+                                        <p class="mt-3 text-base leading-7 text-slate-600">
+                                                {config.title} works best with JavaScript enabled. You can still use the
+                                                guide, FAQ, and strategy sections below without the interactive solver.
+                                        </p>
+                                </div>
+                        </noscript>
                         <WordlebotWasmClient config={config.appConfig} />
                 </div>
 
@@ -189,6 +200,17 @@
                 </div>
 
                 <div class="pb-10">
+                        <noscript>
+                                <div class="mx-auto max-w-5xl rounded-3xl border border-rose-100 bg-white p-6 text-center shadow-sm">
+                                        <p class="text-sm font-bold uppercase tracking-[0.24em] text-rose-600">
+                                                JavaScript disabled
+                                        </p>
+                                        <p class="mt-3 text-base leading-7 text-slate-600">
+                                                {config.title} works best with JavaScript enabled. The page guide and FAQ
+                                                remain available even without the interactive solver.
+                                        </p>
+                                </div>
+                        </noscript>
                         <WordlebotWasmClient config={config.appConfig} />
                 </div>
 
@@ -268,6 +290,17 @@
                 </div>
 
                 <div class="pb-10">
+                        <noscript>
+                                <div class="mb-8 rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+                                        <p class="text-sm font-bold uppercase tracking-[0.24em] text-teal-600">
+                                                JavaScript disabled
+                                        </p>
+                                        <p class="mt-3 text-base leading-7 text-slate-600">
+                                                {config.title} works best with JavaScript enabled. You can still read the
+                                                overview, FAQ, and page sections below.
+                                        </p>
+                                </div>
+                        </noscript>
                         <WordlebotWasmClient config={config.appConfig} />
                 </div>
 

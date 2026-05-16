@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getTodayPageArticle, type TodayArticleKey } from '$lib/daily-article-content';
+  import { sanitizeGeneratedArticleHtml } from '$lib/generated-article-links';
 
   let {
     articleKey,
@@ -37,7 +38,7 @@
       </p>
     {/if}
     <div class="prose prose-lg mt-6 max-w-none prose-headings:scroll-mt-28 prose-h2:text-slate-900 prose-h3:text-slate-900 prose-p:text-slate-600 prose-li:text-slate-600 prose-a:text-teal-600">
-      {@html article.articleHtml}
+      {@html sanitizeGeneratedArticleHtml(article.articleHtml)}
     </div>
   </section>
 {/if}

@@ -76,6 +76,15 @@ export const load: PageServerLoad = async ({ setHeaders }) => {
         mainEntity: hintFaqs.map(faq => ({ '@type': 'Question', name: faq.question, acceptedAnswer: { '@type': 'Answer', text: faq.answer } })),
     };
 
+    const breadcrumbSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://wordsolverx.com/' },
+            { '@type': 'ListItem', position: 2, name: 'Wordle', item: 'https://wordsolverx.com/wordle-answer-today' }
+        ]
+    };
+
     const articleSchema = {
         '@context': 'https://schema.org',
         '@type': 'Article',
@@ -101,7 +110,8 @@ export const load: PageServerLoad = async ({ setHeaders }) => {
         directSocialImage,
         generatedArticle,
         hintFaqs,
-        schemas: JSON.stringify([faqSchema, articleSchema]),
+        publishedDate: new Date(normalizedWordleData?.date || today).toISOString(),
+        schemas: JSON.stringify([faqSchema, articleSchema, breadcrumbSchema]),
         meta: {
             title: pageTitle,
             description: pageDescription,

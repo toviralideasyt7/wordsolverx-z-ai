@@ -58,10 +58,10 @@
           class={`flex h-14 w-14 items-center justify-center rounded-xl border-2 text-3xl font-black uppercase transition-all md:h-16 md:w-16 md:text-4xl ${
             revealedIndices.has(index)
               ? 'border-[#6aaa64] bg-[#6aaa64] text-white shadow-md'
-              : 'border-slate-300 bg-slate-100 text-transparent dark:border-slate-600 dark:bg-slate-800'
+              : 'border-slate-300 bg-slate-100 text-slate-900 wordle-blurred-letter dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100'
           }`}
         >
-          {revealedIndices.has(index) ? letter.toUpperCase() : ''}
+          {letter.toUpperCase()}
         </div>
       </button>
     {/each}
@@ -91,3 +91,11 @@
     {/if}
   </div>
 </div>
+
+<style>
+  .wordle-blurred-letter {
+    filter: blur(8px);
+    user-select: none;
+    transition: filter 0.3s ease, background-color 0.3s ease;
+  }
+</style>

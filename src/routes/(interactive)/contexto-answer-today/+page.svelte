@@ -1,4 +1,5 @@
 <script lang="ts">
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import FAQSection from '$lib/components/FAQSection.svelte';
   import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
@@ -170,6 +171,8 @@
   {@html `<script type="application/ld+json">${JSON.stringify(howToSchema)}</script>`}
 </svelte:head>
 
+<AnswerPageNoscript gameName="Contexto" answer={data.initialAnswer?.answer ?? null} />
+
 <div class="min-h-screen bg-slate-50 dark:bg-slate-800/30">
   <main class="max-w-5xl mx-auto px-4 py-8">
     <div class="text-center mb-8">
@@ -211,12 +214,14 @@
             <div>
               <div class={`rounded-2xl border-2 transition-all p-6 md:p-8 ${showAnswer ? 'bg-teal-50 dark:bg-teal-900/20 border-teal-300 dark:border-teal-600' : 'bg-slate-50 dark:bg-slate-700/50 border-dashed border-slate-300 dark:border-slate-600'}`}>
                 <p class="text-sm text-slate-500 dark:text-slate-400 mb-3">The Contexto answer for this day</p>
-                {#if showAnswer}
-                  <p class="text-4xl md:text-6xl font-black tracking-tight text-teal-700 dark:text-teal-300 capitalize">
-                    {data.initialAnswer.answer}
-                  </p>
-                {:else}
-                  <p class="text-2xl md:text-4xl font-bold text-slate-400 dark:text-slate-500">Answer hidden</p>
+                <p
+                  class="text-4xl md:text-6xl font-black tracking-tight text-teal-700 dark:text-teal-300 capitalize contexto-answer-word"
+                  class:revealed={showAnswer}
+                >
+                  {data.initialAnswer.answer}
+                </p>
+                {#if !showAnswer}
+                  <p class="mt-3 text-sm text-slate-500 dark:text-slate-400">Click reveal when you want the answer.</p>
                 {/if}
               </div>
 
@@ -357,3 +362,16 @@
     <InternalLinkSection currentGame="Contexto" />
   </main>
 </div>
+
+<style>
+  .contexto-answer-word {
+    filter: blur(12px);
+    transition: filter 0.3s ease;
+    user-select: none;
+  }
+
+  .contexto-answer-word.revealed {
+    filter: none;
+    user-select: auto;
+  }
+</style>

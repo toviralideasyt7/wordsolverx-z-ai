@@ -1,6 +1,9 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import ColorClues from '$lib/components/ColorClues.svelte';
+  import { sanitizeGeneratedArticleHtml } from '$lib/generated-article-links';
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import FiChevronDown from '$lib/components/icons/FiChevronDown.svelte';
   import {
@@ -19,6 +22,10 @@
   const generatedArticle = $derived(data.generatedArticle ?? null);
   const hasGeneratedArticle = $derived(Boolean(generatedArticle?.articleHtml));
   const generatedBonusHints = $derived(generatedArticle?.bonusHints ?? []);
+  const publishedDate = $derived(data.publishedDate ?? null);
+  const noscriptAnswer = $derived(
+    `${data.color?.name ?? ''}${data.color?.hex ? ` (${data.color.hex})` : ''}`.trim()
+  );
 
   const filteredHistory = $derived.by(() => {
     const query = historySearch.trim().toLowerCase();
@@ -52,6 +59,9 @@
     {@html `<script type="application/ld+json">${data.schemas}</script>`}
   {/if}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Colordle" answer={noscriptAnswer || null} />
 
 {#if data.error || !data.color}
   <div class="min-h-screen flex items-center justify-center p-4 bg-slate-50">
@@ -251,7 +261,7 @@
               {generatedArticle?.title ?? `Colordle notes for ${answerDateLabel}`}
             </h2>
             <div class="prose prose-lg mt-6 max-w-none prose-headings:scroll-mt-28 prose-h2:text-slate-900 prose-h3:text-slate-900 prose-p:text-slate-600 prose-li:text-slate-600 prose-a:text-indigo-600">
-              {@html generatedArticle.articleHtml}
+              {@html sanitizeGeneratedArticleHtml(generatedArticle?.articleHtml ?? '')}
             </div>
           </section>
         {/if}

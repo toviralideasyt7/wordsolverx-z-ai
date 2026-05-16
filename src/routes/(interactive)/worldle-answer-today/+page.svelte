@@ -1,4 +1,6 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
@@ -12,6 +14,7 @@
   } from '$lib/authors';
 
   let { data } = $props();
+  const publishedDate = $derived(`${data.todayDate}T00:00:00Z`);
 </script>
 
 <svelte:head>
@@ -33,6 +36,9 @@
   <meta name="twitter:image" content="https://wordsolverx.com/images/worldle-answer-today.webp" />
   {@html `<script type="application/ld+json">${data.schemas}</script>`}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Worldle" answer={data.todayAnswer?.country.name ?? null} />
 
 <main class="min-h-screen bg-slate-50">
   <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">

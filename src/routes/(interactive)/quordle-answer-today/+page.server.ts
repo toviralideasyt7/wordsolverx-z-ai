@@ -9,6 +9,7 @@ export const load: PageServerLoad = async () => {
     const formattedDate = format(today, 'MMMM d, yyyy');
     const dateKey = format(today, 'yyyy-MM-dd');
     const todayData = getQuordleToday();
+    const quordleData = getQuordleDataForDate(today);
     const todayWords = todayData ? todayData.d.join(', ').replace(/, ([^,]*)$/, ', and $1') : '';
 
     const last10Days = Array.from({ length: 10 }, (_, i) => {
@@ -53,8 +54,10 @@ export const load: PageServerLoad = async () => {
         formattedDate,
         dateKey,
         todayData,
+        quordleData,
         todayWords,
         last10Days,
+        publishedDate: `${dateKey}T00:00:00Z`,
         schemas: JSON.stringify(jsonLd),
         meta: {
             title: pageTitle,

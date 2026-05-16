@@ -1,4 +1,6 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import QuordleAnswerCard from '$lib/components/QuordleAnswerCard.svelte';
   import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
@@ -11,6 +13,7 @@
   } from '$lib/authors';
 
   let { data } = $props();
+  const publishedDate = $derived(data.publishedDate ?? `${data.dateKey}T00:00:00Z`);
 </script>
 
 <svelte:head>
@@ -33,6 +36,9 @@
   <meta name="twitter:image" content="https://wordsolverx.com/images/quordle-answer-today.webp" />
   {@html `<script type="application/ld+json">${data.schemas}</script>`}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Quordle" answer={data.todayWords} />
 
 <div class="bg-slate-50 dark:bg-slate-800/30 min-h-screen font-sans">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -61,7 +67,7 @@
     </div>
 
     <div class="mb-16">
-      <QuordleAnswerCard date={data.today} />
+      <QuordleAnswerCard date={data.today} initialData={data.quordleData} />
     </div>
 
     <article class="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-xl shadow-[0_1px_3px_rgb(0_0_0/0.04)] border border-slate-200 dark:border-slate-700">

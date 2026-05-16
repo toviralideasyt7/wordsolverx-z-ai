@@ -1,5 +1,8 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
+  import { sanitizeGeneratedArticleHtml } from '$lib/generated-article-links';
   import WordleDisplayWrapper from '$lib/components/WordleDisplayWrapper.svelte';
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import {
@@ -25,6 +28,9 @@
       normalizeHtml(data.generatedArticle.articleHtml) !== normalizeHtml(data.wordleData?.content_guide)
       ? data.generatedArticle
       : null
+  );
+  const publishedDate = $derived.by(() =>
+    data.publishedDate ?? (data.wordleData?.date ? `${data.wordleData.date}T00:00:00Z` : null)
   );
 </script>
 
@@ -58,6 +64,9 @@
   {@html `<script type="application/ld+json">${data.schemas}</script>`}
 </svelte:head>
 
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Wordle" answer={data.wordleWord?.toUpperCase()} />
+
 <main class="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 font-sans">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <WordleDisplayWrapper
@@ -82,7 +91,7 @@
           <p class="mt-4 text-lg leading-8 text-slate-600">{distinctGeneratedArticle.summary}</p>
         {/if}
         <div class="prose prose-lg mt-6 max-w-none">
-          {@html distinctGeneratedArticle.articleHtml}
+          {@html sanitizeGeneratedArticleHtml(distinctGeneratedArticle.articleHtml ?? '')}
         </div>
       </section>
     {/if}

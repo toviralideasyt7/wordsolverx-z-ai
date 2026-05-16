@@ -11,19 +11,15 @@
         let errorMessage = $state('');
         let cleanup: (() => void) | undefined;
 
-        function buildShadowStyles(css: string) {
-                return (
-                        css
-                                .replace(':root {', ':host {')
-                                .replace(/html,\s*body\s*\{/, ':host {')
-                                .replace(/body\s*\{/, '.shadow-body {') +
-                        `
-:host {
-  display: block;
-  width: 100%;
-}
-`
-                );
+        function scopeWasmStyles(css: string) {
+                const scoped = css
+                        .replace(/:root\s*\{/g, '.wordlebot-scope {')
+                        .replace(/html,\s*body\s*\{/g, '.wordlebot-scope {')
+                        .replace(/^body\s*\{/gm, '.wasm-body {')
+                        .replace(/:host\s*\{/g, '.wordlebot-scope {')
+                        .replace(/\.shadow-body/g, '.wasm-body');
+
+                return `@scope (.wordlebot-scope) {\n${scoped}\n}`;
         }
 
         async function start() {
@@ -40,19 +36,22 @@
                                 import('$lib/wordlebot-wasm/app')
                         ]);
 
-                        const shadowRoot = host.shadowRoot ?? host.attachShadow({ mode: 'open' });
-                        shadowRoot.innerHTML = '';
+                        host.innerHTML = '';
+
+                        const resetWrapper = document.createElement('div');
+                        resetWrapper.className = 'wordlebot-scope';
 
                         const style = document.createElement('style');
-                        style.textContent = buildShadowStyles(rawStyles);
+                        style.textContent = scopeWasmStyles(rawStyles);
 
                         const body = document.createElement('div');
-                        body.className = 'shadow-body';
+                        body.className = 'wasm-body';
 
                         const appTarget = document.createElement('div');
                         body.appendChild(appTarget);
 
-                        shadowRoot.append(style, body);
+                        resetWrapper.append(style, body);
+                        host.append(resetWrapper);
 
                         cleanup = mountWordlebotApp(appTarget, config);
                 } catch (error) {
@@ -114,14 +113,18 @@
         bind:this={host}
         class="solver-host block w-full"
         style="min-height: 280px;"
-        class:opacity-0={!isStarted}
-        class:opacity-100={isStarted}
-        class:transition-opacity={isStarted}
-        class:duration-500={isStarted}
 ></div>
 
 <style>
+        :global(.wordlebot-scope) {
+                all: initial;
+                display: block;
+                width: 100%;
+                font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+                color: #1a1a1b;
+        }
+
         .solver-host {
-                transition: opacity 400ms ease;
+                min-height: 280px;
         }
 </style>

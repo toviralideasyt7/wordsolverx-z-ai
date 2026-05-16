@@ -58,8 +58,8 @@
   </div>
 
   <!-- Answer Section -->
-  <div class="transition-all duration-700 transform {isRevealed ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95 pointer-events-none h-0 overflow-hidden'}">
-    <div class="bg-orange-50 rounded-3xl p-8 border border-orange-100 shadow-xl text-center relative overflow-hidden">
+  <div class="transition-all duration-700 transform">
+    <div class="bg-orange-50 rounded-3xl p-8 border border-orange-100 shadow-xl text-center relative overflow-hidden phoodle-answer-panel" class:revealed={isRevealed}>
       <!-- Decorative elements -->
       <div class="absolute top-0 right-0 p-4 opacity-10">
         <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24">
@@ -86,3 +86,16 @@
     </div>
   </div>
 </div>
+
+<style>
+  .phoodle-answer-panel {
+    filter: blur(10px);
+    user-select: none;
+    transition: filter 0.3s ease;
+  }
+
+  .phoodle-answer-panel.revealed {
+    filter: none;
+    user-select: auto;
+  }
+</style>

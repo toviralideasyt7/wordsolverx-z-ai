@@ -1,4 +1,6 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import { PRESTON_HAYES_AUTHOR_NAME, PRESTON_HAYES_AUTHOR_IMAGE, PRESTON_HAYES_AUTHOR_DESCRIPTION } from '$lib/authors';
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
@@ -10,6 +12,9 @@
   let { data } = $props();
   let revealed = $state(false);
   const todayKey = getMainDailyDateKey();
+  const publishedDate = $derived(
+    data.today ? `${data.today.date}T00:00:00Z` : `${todayKey}T00:00:00Z`
+  );
 
   function formatEntryDate(dateKey: string) {
     return new Date(`${dateKey}T12:00:00Z`).toLocaleDateString('en-US', {
@@ -48,6 +53,9 @@
   <meta name="twitter:image" content={`https://wordsolverx.com${data.meta.featuredImage}`} />
   {@html `<script type="application/ld+json">${data.schemas}</script>`}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Countryle" answer={data.today?.country.country ?? null} />
 
 <div class="min-h-screen bg-slate-50">
   <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">

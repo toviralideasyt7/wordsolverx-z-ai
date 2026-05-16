@@ -1,9 +1,38 @@
+import { existsSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+import { formatPuzzleDateKey, getPuzzleDateForGame, TODAY_ROUTE_GAME_MAP, ARCHIVE_ROUTE_GAME_MAP, type PuzzleGame } from '$lib/puzzle-window';
 import { SITEMAP_ENTRIES } from '$lib/route-registry';
 
 const BLOCKED_URL_PATTERNS = ['/create-custom-wordle', '/custom-wordle', '/admin', '/api/', '/private'];
 
 const CONTENT_PAGES = new Set(['/about', '/contact', '/privacy-policy', '/terms-of-service', '/disclaimer', '/editorial-policy']);
 const HUB_PAGES = new Set(['/today', '/solver', '/archive', '/guides']);
+const MAIN_DAILY_FALLBACK_GAME: PuzzleGame = 'wordle';
+const ROUTE_LASTMOD_GAME_MAP: Record<string, PuzzleGame> = {
+	...TODAY_ROUTE_GAME_MAP,
+	...ARCHIVE_ROUTE_GAME_MAP,
+	'/canuckle-answer-today': MAIN_DAILY_FALLBACK_GAME,
+	'/canuckle-archive': MAIN_DAILY_FALLBACK_GAME,
+	'/countryle-answer-today': MAIN_DAILY_FALLBACK_GAME,
+	'/countryle-archive': MAIN_DAILY_FALLBACK_GAME,
+	'/framed-answer-today': MAIN_DAILY_FALLBACK_GAME,
+	'/framed-archive': MAIN_DAILY_FALLBACK_GAME,
+	'/colorfle-archive': 'colorfle'
+};
+const WORDLEBOT_VARIANT_SOLVER_ROUTES = new Set([
+	'/canuckle-solver',
+	'/quordle-solver',
+	'/dordle-solver',
+	'/octordle-solver',
+	'/thirdle-solver',
+	'/hardle-solver',
+	'/warmle-solver',
+	'/woodle-solver',
+	'/w-peaks-solver',
+	'/xordle-solver',
+	'/fibble-solver',
+	'/spotle-wordle-solver'
+]);
 
 function shouldIncludeUrl(url: string): boolean {
 	return !BLOCKED_URL_PATTERNS.some((pattern) => url.includes(pattern));
@@ -36,14 +65,76 @@ function classifyUrl(path: string): SitemapEntry {
 	return { priority: '0.6', changefreq: 'weekly' };
 }
 
+function normalizeDate(date: Date): string {
+	return date.toISOString().split('T')[0];
+}
+
+function getPuzzleRouteLastModified(path: string): string | null {
+	const game = ROUTE_LASTMOD_GAME_MAP[path];
+	if (!game) {
+		return null;
+	}
+
+	return formatPuzzleDateKey(getPuzzleDateForGame(game));
+}
+
+function getFilesystemCandidates(path: string): string[] {
+	const route = path === '/' ? '' : path.replace(/^\/+/, '');
+	const candidates = [
+		join(process.cwd(), 'src', 'routes', `${route}`, '+page.svelte'),
+		join(process.cwd(), 'src', 'routes', `${route}`, '+page.server.ts'),
+		join(process.cwd(), 'src', 'routes', `${route}`, '+page.ts'),
+		join(process.cwd(), 'src', 'routes', '(interactive)', `${route}`, '+page.svelte'),
+		join(process.cwd(), 'src', 'routes', '(interactive)', `${route}`, '+page.server.ts'),
+		join(process.cwd(), 'src', 'routes', '(interactive)', `${route}`, '+page.ts')
+	];
+
+	if (/^\/\d+-letter-wordle-solver$/.test(path)) {
+		candidates.push(
+			join(process.cwd(), 'src', 'routes', '(interactive)', '[wordLength=wordlebotLength]-letter-wordle-solver', '+page.ts')
+		);
+	}
+
+	if (WORDLEBOT_VARIANT_SOLVER_ROUTES.has(path)) {
+		candidates.push(
+			join(process.cwd(), 'src', 'routes', '(interactive)', '[variant=wordlebotVariant]-solver', '+page.ts')
+		);
+	}
+
+	return candidates;
+}
+
+function getFilesystemLastModified(path: string): string | null {
+	const mtimes = getFilesystemCandidates(path)
+		.filter((candidate) => existsSync(candidate))
+		.map((candidate) => statSync(candidate).mtime);
+
+	if (mtimes.length === 0) {
+		return null;
+	}
+
+	const latest = mtimes.reduce((currentLatest, candidate) =>
+		candidate.getTime() > currentLatest.getTime() ? candidate : currentLatest
+	);
+	return normalizeDate(latest);
+}
+
+function getLastModified(path: string): string {
+	if (HUB_PAGES.has(path)) {
+		return formatPuzzleDateKey(getPuzzleDateForGame(MAIN_DAILY_FALLBACK_GAME));
+	}
+
+	return getPuzzleRouteLastModified(path) ?? getFilesystemLastModified(path) ?? formatPuzzleDateKey(getPuzzleDateForGame(MAIN_DAILY_FALLBACK_GAME));
+}
+
 function generateSitemap(): string {
-	const today = new Date().toISOString().split('T')[0];
 	const urls = SITEMAP_ENTRIES.filter(shouldIncludeUrl)
 		.map((url: string) => {
 			const fullUrl = url.startsWith('http') ? url : `https://wordsolverx.com${url}`;
 			const { priority, changefreq } = classifyUrl(url);
+			const lastmod = getLastModified(url);
 
-			let entry = `  <url>\n    <loc>${fullUrl}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>`;
+			let entry = `  <url>\n    <loc>${fullUrl}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>`;
 
 			if (url === '/') {
 				entry += `\n    <image:image>\n      <image:loc>https://wordsolverx.com/wordsolverx.webp</image:loc>\n    </image:image>`;

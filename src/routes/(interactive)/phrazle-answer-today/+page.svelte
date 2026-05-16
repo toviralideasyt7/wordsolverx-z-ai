@@ -1,4 +1,5 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import FAQSection from '$lib/components/FAQSection.svelte';
@@ -41,6 +42,7 @@
   let showAfternoonAnswer = $state(true);
   let copiedWord = $state<string | null>(null);
   const todayKey = getMainDailyDateKey();
+  const publishedDate = $derived(`${data.todayAnswers.date}T00:00:00Z`);
 
   async function copyToClipboard(text: string) {
     if (!navigator?.clipboard) return;
@@ -58,7 +60,7 @@
   <meta name="keywords" content={data.pageKeywords} />
   <meta property="og:title" content={data.metaTitle} />
   <meta property="og:description" content={data.pageDescription} />
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content="article" />
   <meta property="og:url" content="https://wordsolverx.com/phrazle-answer-today" />
   <meta property="og:site_name" content="WordSolverX" />
   <meta property="og:image" content="https://wordsolverx.com/images/phrazle-answer-today.webp" />
@@ -68,6 +70,16 @@
   <link rel="canonical" href="https://wordsolverx.com/phrazle-answer-today" />
   {@html `<script type="application/ld+json">${data.schemas}</script>`}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<noscript>
+  <p>
+    The Phrazle answers for today are:
+    <strong>Morning: {data.todayAnswers.morning.phrase.toUpperCase()}</strong>
+    and
+    <strong>Afternoon: {data.todayAnswers.afternoon.phrase.toUpperCase()}</strong>.
+  </p>
+</noscript>
 
 <div class="min-h-screen bg-slate-50">
   <main class="max-w-5xl mx-auto px-4 py-8">

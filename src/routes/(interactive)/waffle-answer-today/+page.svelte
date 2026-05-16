@@ -1,4 +1,6 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import WaffleAnswerCard from '$lib/components/WaffleAnswerCard.svelte';
   import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
@@ -12,6 +14,8 @@
   } from '$lib/authors';
 
   let { data } = $props();
+  const publishedDate = $derived(data.dateKey ? `${data.dateKey}T00:00:00Z` : null);
+  const noscriptAnswer = $derived(data.words?.join(', ') ?? null);
 </script>
 
 <svelte:head>
@@ -19,8 +23,19 @@
   <meta name="description" content={data.meta.description} />
   <meta name="news_keywords" content={data.meta.keywords ?? 'waffle answer today, waffle answer, waffle hint, waffle hint today'} />
   <link rel="canonical" href="https://wordsolverx.com/waffle-answer-today" />
+  <meta property="og:title" content={data.meta.title} />
+  <meta property="og:description" content={data.meta.description} />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://wordsolverx.com/waffle-answer-today" />
+  <meta property="og:site_name" content="WordSolverX" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={data.meta.title} />
+  <meta name="twitter:description" content={data.meta.description} />
   {@html `<script type="application/ld+json">${data.schemas}</script>`}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Waffle" answer={noscriptAnswer} />
 
 {#if data.error || !data.puzzle}
 <main class="max-w-3xl mx-auto px-4 py-12">

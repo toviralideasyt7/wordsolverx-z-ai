@@ -1,4 +1,6 @@
 <script lang="ts">
+  import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+  import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
   import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import GlobleCluesSection from '$lib/components/GlobleCluesSection.svelte';
@@ -10,6 +12,7 @@
   } from '$lib/authors';
 
   let { data } = $props();
+  const publishedDate = $derived(`${data.dateKey}T00:00:00Z`);
 </script>
 
 <svelte:head>
@@ -29,6 +32,9 @@
   <meta name="twitter:image" content={data.meta.featuredImage ?? 'https://wordsolverx.com/images/globle-answer-today.webp'} />
   {@html `<script type="application/ld+json">${data.schemas}</script>`}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Globle" answer={data.country?.name ?? null} />
 
 <div class="bg-slate-50 dark:bg-slate-800/30 min-h-screen font-sans">
   <div class="container mx-auto px-4 py-8 max-w-4xl">

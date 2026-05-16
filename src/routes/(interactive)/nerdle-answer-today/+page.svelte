@@ -1,4 +1,6 @@
 <script lang="ts">
+        import AnswerPageMeta from '$lib/components/AnswerPageMeta.svelte';
+        import AnswerPageNoscript from '$lib/components/AnswerPageNoscript.svelte';
         import InternalLinkSection from '$lib/components/InternalLinkSection.svelte';
   import AuthorCard from '$lib/components/AuthorCard.svelte';
   import GeneratedTodayArticle from '$lib/components/GeneratedTodayArticle.svelte';
@@ -14,6 +16,16 @@
         let copiedToken = $state<string | null>(null);
         let h1Title = $derived(`Nerdle Answer Today ( ${data.formattedDate} )`);
         let modes = $derived((data.answerData?.modes ?? []) as NerdleModeData[]);
+        const publishedDate = $derived(
+                data.answerData?.date ? `${data.answerData.date}T00:00:00Z` : null
+        );
+        const noscriptAnswer = $derived.by(() =>
+                (data.answerData?.modes ?? [])
+                        .flatMap((mode: NerdleModeData) =>
+                                mode.answers.map((answerEntry) => `${mode.name}: ${answerEntry.answer}`)
+                        )
+                        .join(' | ')
+        );
 
         function getTileStyle(_char: string, index: number): string {
                 const background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
@@ -49,6 +61,9 @@
         <meta name="twitter:image" content="https://wordsolverx.com/images/nerdle-answer-today.webp" />
         {@html `<script type="application/ld+json">${data.schemas}</script>`}
 </svelte:head>
+
+<AnswerPageMeta publishedDate={publishedDate} />
+<AnswerPageNoscript gameName="Nerdle" answer={noscriptAnswer || null} />
 
 <main class="min-h-screen bg-slate-50 text-slate-900">
         <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">

@@ -4,7 +4,6 @@
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
   import FAQSection from '$lib/components/FAQSection.svelte';
   import BetweenleSolverClient from '$lib/components/betweenle/BetweenleSolverClient.svelte';
-  import { WORD_GAMES_BETWEENLE_UNLIMITED_URL } from '$lib/word-games-links';
   import {
     generateBreadcrumbSchema,
     generateFAQSchema,

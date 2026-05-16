@@ -316,7 +316,7 @@
       {#if revealHtml || analysisHtml}
         <div class="mt-12 bg-white dark:bg-slate-800 rounded-lg shadow-[0_1px_3px_rgb(0_0_0/0.04)] p-6 sm:p-8 max-w-3xl mx-auto border border-slate-200 dark:border-slate-700">
           {#if revealHtml}
-            <div class="prose prose-slate dark:prose-invert max-w-none transition-all duration-700 overflow-hidden {isRevealed ? 'max-h-[500px] opacity-100 mb-8 pb-8 border-b border-slate-100 dark:border-slate-700' : 'max-h-0 opacity-0'}">
+            <div class="prose prose-slate dark:prose-invert max-w-none mb-8 border-b border-slate-100 pb-8 transition-all duration-700 dark:border-slate-700 reveal-section" class:revealed={isRevealed}>
               {@html revealHtml}
             </div>
           {/if}
@@ -356,11 +356,9 @@
             <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">{aboutTitle}</h2>
           </div>
 
-          <div class="prose prose-slate dark:prose-invert max-w-none transition-all duration-500 {isRevealed ? 'opacity-100 blur-0' : 'opacity-40 blur-sm select-none'}">
+          <div class="prose prose-slate dark:prose-invert max-w-none transition-all duration-500 {isRevealed ? '' : 'blurred-answer'}">
             <p class="text-base sm:text-lg text-slate-700 dark:text-slate-300">
-              {@html isRevealed
-                ? solutionText.replace(wordleWord.toLowerCase(), wordleWord.toUpperCase())
-                : solutionText.replace(wordleWord.toLowerCase(), '?????')}
+              {@html solutionText.replace(wordleWord.toLowerCase(), wordleWord.toUpperCase())}
             </p>
             <p class="mt-4 text-base sm:text-lg text-slate-700 dark:text-slate-300">
               This answer is for {#if wordleData?.days_since_launch}<span class="font-medium">Day {wordleData.days_since_launch}</span>{:else}{pageContext}{/if}, released on {formattedDate}. {comeBackText}
@@ -368,7 +366,7 @@
           </div>
 
           <!-- Stats Grid -->
-          <div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center transition-all duration-500 {isRevealed ? 'opacity-100' : 'opacity-40 blur-sm'}">
+          <div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center transition-all duration-500 {isRevealed ? '' : 'blurred-stats'}">
             <div>
               <p class="text-sm text-slate-500 dark:text-slate-400">Day</p>
               <p class="text-lg font-semibold text-slate-900 dark:text-white">{wordleData?.days_since_launch}</p>
@@ -420,6 +418,22 @@
     border: none; cursor: pointer; text-align: left;
     font-size: 15px; font-weight: 600; color: #111827;
     transition: background 0.2s; gap: 12px;
+  }
+  .reveal-section {
+    filter: blur(8px);
+    user-select: none;
+  }
+  .reveal-section.revealed {
+    filter: none;
+    user-select: auto;
+  }
+  .blurred-answer {
+    filter: blur(8px);
+    user-select: none;
+  }
+  .blurred-stats {
+    filter: blur(6px);
+    user-select: none;
   }
   :global(.dark .faq-trigger) { background: #1f2937; color: #f9fafb; }
   :global(.faq-trigger:hover) { background: #f3f4f6; }

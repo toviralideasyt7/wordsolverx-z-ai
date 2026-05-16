@@ -68,8 +68,21 @@
 </div>
 
 <!-- Answer section -->
-{#if revealed && children}
-  <div>
+{#if children}
+  <div class="globle-answer-reveal" class:revealed={revealed}>
     {@render children()}
   </div>
 {/if}
+
+<style>
+  .globle-answer-reveal {
+    filter: blur(10px);
+    user-select: none;
+    transition: filter 0.3s ease;
+  }
+
+  .globle-answer-reveal.revealed {
+    filter: none;
+    user-select: auto;
+  }
+</style>
