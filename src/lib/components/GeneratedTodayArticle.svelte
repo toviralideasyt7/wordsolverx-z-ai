@@ -16,6 +16,9 @@
   } = $props();
 
   const article = $derived(getTodayPageArticle(articleKey, articleDate));
+
+  // Use the article's own date when it differs from the page date (fallback scenario)
+  const displayDate = $derived(article?.date && article.date !== articleDate ? article.date : articleDate);
 </script>
 
 {#if article?.articleHtml}
@@ -23,7 +26,7 @@
     <p class="text-sm font-semibold uppercase tracking-[0.24em] text-teal-600">{eyebrow}</p>
     <p class="text-xs text-slate-400 mt-1">
       <span class="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse mr-1.5 align-middle"></span>
-      Updated {articleDate}
+      Updated {displayDate}
     </p>
     <h2 class="mt-2 text-3xl font-bold text-slate-900">
       {article.title || fallbackTitle}

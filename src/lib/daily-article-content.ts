@@ -58,11 +58,25 @@ const dailyArticles = dailyArticlesJson as DailyArticleBundle;
 
 function getMatchingArticle(key: string, date?: string): DailyArticleContent | null {
   const article = dailyArticles.articles?.[key];
-  if (!article || article.date !== date) {
-    return date ? null : article ?? null;
+  if (!article) {
+    return null;
   }
 
-  return article;
+  // Exact date match — best case
+  if (article.date === date) {
+    return article;
+  }
+
+  // If no date was requested, return whatever we have
+  if (!date) {
+    return article;
+  }
+
+  // Date mismatch: still return the article so pages are never blank.
+  // The article content is game-specific advice/tips that remains useful
+  // even if it was generated for a previous day. The component will show
+  // the actual article date ("Updated 2026-05-14") so readers know.
+  return { ...article, meta: { ...article.meta, fallbackUsed: true } };
 }
 
 export function getDailyArticleBundle(): DailyArticleBundle {
