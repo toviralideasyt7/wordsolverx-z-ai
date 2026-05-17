@@ -9,6 +9,7 @@ const projectRoot = path.resolve(scriptDir, '..');
 const buildRoot = path.join(projectRoot, 'build');
 const workerBuildDir = path.join(buildRoot, 'cloudflare-worker');
 const viteEntrypoint = path.resolve(projectRoot, 'node_modules/vite/bin/vite.js');
+const sitemapLastmodScript = path.resolve(projectRoot, 'scripts/generate-sitemap-lastmod.mjs');
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -144,6 +145,16 @@ async function ensureWorkerBuildDirIsClear() {
 }
 
 await ensureWorkerBuildDirIsClear();
+
+const sitemapResult = spawnSync(process.execPath, [sitemapLastmodScript], {
+	stdio: 'inherit',
+	cwd: projectRoot,
+	env: process.env
+});
+
+if (typeof sitemapResult.status === 'number' && sitemapResult.status !== 0) {
+	process.exit(sitemapResult.status);
+}
 
 const result = spawnSync(process.execPath, [viteEntrypoint, 'build'], {
 	stdio: 'inherit',

@@ -1,6 +1,5 @@
-import { existsSync, statSync } from 'node:fs';
-import { join } from 'node:path';
 import { formatPuzzleDateKey, getPuzzleDateForGame, TODAY_ROUTE_GAME_MAP, ARCHIVE_ROUTE_GAME_MAP, type PuzzleGame } from '$lib/puzzle-window';
+import { GENERATED_SITEMAP_LASTMOD } from '$lib/generated/sitemap-lastmod';
 import { SITEMAP_ENTRIES } from '$lib/route-registry';
 
 const BLOCKED_URL_PATTERNS = ['/create-custom-wordle', '/custom-wordle', '/admin', '/api/', '/private'];
@@ -19,20 +18,6 @@ const ROUTE_LASTMOD_GAME_MAP: Record<string, PuzzleGame> = {
 	'/framed-archive': MAIN_DAILY_FALLBACK_GAME,
 	'/colorfle-archive': 'colorfle'
 };
-const WORDLEBOT_VARIANT_SOLVER_ROUTES = new Set([
-	'/canuckle-solver',
-	'/quordle-solver',
-	'/dordle-solver',
-	'/octordle-solver',
-	'/thirdle-solver',
-	'/hardle-solver',
-	'/warmle-solver',
-	'/woodle-solver',
-	'/w-peaks-solver',
-	'/xordle-solver',
-	'/fibble-solver',
-	'/spotle-wordle-solver'
-]);
 
 function shouldIncludeUrl(url: string): boolean {
 	return !BLOCKED_URL_PATTERNS.some((pattern) => url.includes(pattern));
@@ -65,10 +50,6 @@ function classifyUrl(path: string): SitemapEntry {
 	return { priority: '0.6', changefreq: 'weekly' };
 }
 
-function normalizeDate(date: Date): string {
-	return date.toISOString().split('T')[0];
-}
-
 function getPuzzleRouteLastModified(path: string): string | null {
 	const game = ROUTE_LASTMOD_GAME_MAP[path];
 	if (!game) {
@@ -78,45 +59,8 @@ function getPuzzleRouteLastModified(path: string): string | null {
 	return formatPuzzleDateKey(getPuzzleDateForGame(game));
 }
 
-function getFilesystemCandidates(path: string): string[] {
-	const route = path === '/' ? '' : path.replace(/^\/+/, '');
-	const candidates = [
-		join(process.cwd(), 'src', 'routes', `${route}`, '+page.svelte'),
-		join(process.cwd(), 'src', 'routes', `${route}`, '+page.server.ts'),
-		join(process.cwd(), 'src', 'routes', `${route}`, '+page.ts'),
-		join(process.cwd(), 'src', 'routes', '(interactive)', `${route}`, '+page.svelte'),
-		join(process.cwd(), 'src', 'routes', '(interactive)', `${route}`, '+page.server.ts'),
-		join(process.cwd(), 'src', 'routes', '(interactive)', `${route}`, '+page.ts')
-	];
-
-	if (/^\/\d+-letter-wordle-solver$/.test(path)) {
-		candidates.push(
-			join(process.cwd(), 'src', 'routes', '(interactive)', '[wordLength=wordlebotLength]-letter-wordle-solver', '+page.ts')
-		);
-	}
-
-	if (WORDLEBOT_VARIANT_SOLVER_ROUTES.has(path)) {
-		candidates.push(
-			join(process.cwd(), 'src', 'routes', '(interactive)', '[variant=wordlebotVariant]-solver', '+page.ts')
-		);
-	}
-
-	return candidates;
-}
-
-function getFilesystemLastModified(path: string): string | null {
-	const mtimes = getFilesystemCandidates(path)
-		.filter((candidate) => existsSync(candidate))
-		.map((candidate) => statSync(candidate).mtime);
-
-	if (mtimes.length === 0) {
-		return null;
-	}
-
-	const latest = mtimes.reduce((currentLatest, candidate) =>
-		candidate.getTime() > currentLatest.getTime() ? candidate : currentLatest
-	);
-	return normalizeDate(latest);
+function getGeneratedLastModified(path: string): string | null {
+	return GENERATED_SITEMAP_LASTMOD[path] ?? null;
 }
 
 function getLastModified(path: string): string {
@@ -124,7 +68,7 @@ function getLastModified(path: string): string {
 		return formatPuzzleDateKey(getPuzzleDateForGame(MAIN_DAILY_FALLBACK_GAME));
 	}
 
-	return getPuzzleRouteLastModified(path) ?? getFilesystemLastModified(path) ?? formatPuzzleDateKey(getPuzzleDateForGame(MAIN_DAILY_FALLBACK_GAME));
+	return getPuzzleRouteLastModified(path) ?? getGeneratedLastModified(path) ?? formatPuzzleDateKey(getPuzzleDateForGame(MAIN_DAILY_FALLBACK_GAME));
 }
 
 function generateSitemap(): string {
