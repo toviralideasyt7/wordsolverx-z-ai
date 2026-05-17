@@ -53,7 +53,7 @@
         If you email WordSolverX, we may receive the information you include in that message, such
         as your name, email address, the content of your message, and any other details you choose
         to send.
-      
+      </p>
 
       <h2>2. Technical Data and Hosting Logs</h2>
       <p>
@@ -61,28 +61,28 @@
         technical information such as IP address, browser type, device type, referring page,
         timestamps, and requested pages. This information is used for site operations, security,
         troubleshooting, and general performance review.
-      
+      </p>
 
       <h2>3. Browser Storage and Site Preferences</h2>
       <p>
         Some tools on WordSolverX store preferences directly in your browser so the experience
         works smoothly the next time you visit. For example, solver tools may save preferences such
         as selected modes, answer set settings, or word length choices using browser storage.
-      
+      </p>
       <p>
         These settings stay in your browser unless you clear them yourself through your browser
         settings.
-      
+      </p>
 
       <h2>4. Cookies and Embedded Content</h2>
       <p>
         WordSolverX may use basic browser storage and may include embedded content from third-party
         services, such as video embeds. If you interact with embedded third-party content, those
         services may collect data according to their own privacy policies.
-      
+      </p>
 
       <h2>5. How We Use Information</h2>
-      <p>We may use information described in this policy to:
+      <p>We may use information described in this policy to:</p>
       <ul>
         <li>Operate, maintain, and improve WordSolverX</li>
         <li>Remember simple tool preferences inside your browser</li>
@@ -94,39 +94,40 @@
       <p>
         WordSolverX does not sell your personal information. Information may be processed by
         hosting, infrastructure, or embedded service providers only as needed to operate the site.
-      
+      </p>
 
       <h2>7. Data Retention</h2>
       <p>
         Email messages and related correspondence may be kept for as long as reasonably necessary to
         respond, maintain records, or follow up on a site issue. Browser-stored preferences remain
         on your device until you clear them.
-      
+      </p>
 
       <h2>8. Your Rights and Choices</h2>
       <p>
         Depending on where you live, you may have rights related to access, correction, or deletion
         of personal information you have provided to us. To make a request, email
         <a href="mailto:wordsolverx@gmail.com">wordsolverx@gmail.com</a>.
-      
+      </p>
 
       <h2>9. Children's Privacy</h2>
       <p>
         WordSolverX is not directed specifically to children under 13, and we do not knowingly
         collect personal information from children through this website.
-      
+      </p>
 
       <h2>10. Changes to This Policy</h2>
       <p>
         We may update this Privacy Policy from time to time as the site changes. Any updates will be
         posted on this page with a revised last updated date.
-      
+      </p>
 
       <h2>11. Contact</h2>
       <p>
         If you have questions about this Privacy Policy, contact us at
         <a href="mailto:wordsolverx@gmail.com">wordsolverx@gmail.com</a>.
-      
+      </p>
     </div>
   </div>
 </div>
+

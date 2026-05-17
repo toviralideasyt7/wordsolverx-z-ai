@@ -58,17 +58,17 @@
         informational and entertainment purposes. The site is intended to help users explore puzzle
         content, review past answers, and use solving tools more easily. We cover over 20 daily
         puzzle games including Wordle, Quordle, Nerdle, Worldle, Contexto, Betweenle, and many
-        others. Each game has its own dedicated answer page, archive, and (in most cases) an
+        others. Each game has its own dedicated answer page, archive, and, in most cases, an
         interactive solver tool. Everything on the site is free to use and does not require account
         creation or sign-up.
       </p>
 
       <h2>3. Acceptable Use</h2>
-      <p>You agree not to misuse the site. This includes, without limitation:
+      <p>You agree not to misuse the site. This includes, without limitation:</p>
       <ul>
         <li>Trying to disrupt, damage, or overload the website or its infrastructure through denial-of-service attacks, excessive automated requests, or other means</li>
         <li>Attempting unauthorized access to data, accounts, or systems, including trying to access admin panels, databases, or internal APIs that are not publicly intended for use</li>
-        <li>Using automated scraping or abusive traffic in a way that harms site availability for other users — this includes running bots that request hundreds of pages per second or scraping the entire site content for redistribution</li>
+        <li>Using automated scraping or abusive traffic in a way that harms site availability for other users - this includes running bots that request hundreds of pages per second or scraping the entire site content for redistribution</li>
         <li>Copying site content in bulk for deceptive or competing uses, such as republishing our answer pages on another website without attribution or creating a derivative service that directly mirrors our content and functionality</li>
         <li>Using the site in any way that violates applicable laws or regulations in your jurisdiction</li>
       </ul>
@@ -85,46 +85,46 @@
         trademarks, logos, and brands referenced on the site belong to their respective owners.
         WordSolverX is an independent website and is not affiliated with the official publishers of
         the puzzle games covered here unless explicitly stated.
-      
+      </p>
 
       <h2>5. Accuracy and Availability</h2>
       <p>
         We aim to keep the site accurate and up to date, but we do not guarantee that every page,
         answer, archive entry, or tool output will always be complete, correct, or available without
         interruption.
-      
+      </p>
 
       <h2>6. No Professional Advice</h2>
       <p>
         The content on WordSolverX is provided for general informational and entertainment purposes
         only. It is not legal, financial, medical, or other professional advice.
-      
+      </p>
 
       <h2>7. Third-Party Links and Services</h2>
       <p>
         Some pages may include links or embedded content from third-party services. WordSolverX is
         not responsible for the content, policies, or practices of third-party websites.
-      
+      </p>
 
       <h2>8. Limitation of Liability</h2>
       <p>
         To the fullest extent permitted by law, WordSolverX will not be liable for any indirect,
         incidental, special, consequential, or punitive damages arising out of or related to your
         use of the site.
-      
+      </p>
 
       <h2>9. Changes to These Terms</h2>
       <p>
         We may update these Terms and Conditions from time to time. Any revised version will be
         posted on this page with a new last updated date.
-      
+      </p>
 
       <h2>10. Contact</h2>
       <p>
         If you have questions about these Terms and Conditions, email
         <a href="mailto:wordsolverx@gmail.com">wordsolverx@gmail.com</a>
         or visit our <a href="/contact">contact page</a>.
-      
+      </p>
     </div>
   </div>
 </div>

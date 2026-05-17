@@ -48,8 +48,7 @@ const PRIMARY_MODEL = 'deepseek-ai/deepseek-v4-pro';
 const NVIDIA_MODEL_CHAIN = [
   PRIMARY_MODEL,
   'qwen/qwen3.5-397b-a17b',
-  'moonshotai/kimi-k2.6',
-  'z-ai/glm4.7'
+  'moonshotai/kimi-k2.6'
 ];
 const BATCH_GROUPS = ['site', 'gamedle', 'waffle'];
 
@@ -1495,7 +1494,22 @@ function classifyProviderError(message) {
     return 'rate_limit';
   }
 
-  return 'hard_failure';
+  if (
+    normalized.includes('model returned an empty response') ||
+    normalized.includes('model response did not contain a json object') ||
+    normalized.includes('model response did not include a usable message content field') ||
+    normalized.includes('model payload was not an object') ||
+    normalized.includes('payload must include at least') ||
+    normalized.includes('html is missing') ||
+    normalized.includes('html does not include the target date') ||
+    normalized.includes('html did not reach the minimum word count') ||
+    normalized.includes('html exceeded the maximum word count') ||
+    normalized.includes('html contains banned phrase')
+  ) {
+    return 'route_model_failure';
+  }
+
+  return 'provider_model_failure';
 }
 
 function advanceProviderModel(provider, modelIndex, routeKey, laneIndex, reason) {
@@ -1533,6 +1547,7 @@ async function generateWithProviders({ game, prompt, targetDate, providers, rout
 
       const rotatedKeys = takeProviderKeyOrder(provider);
       const model = provider.models[modelIndex];
+      let moveToNextRouteModel = false;
 
       for (const apiKeyEntry of rotatedKeys) {
         if ((provider.modelCursor ?? 0) > modelIndex) {
@@ -1540,7 +1555,7 @@ async function generateWithProviders({ game, prompt, targetDate, providers, rout
         }
 
         const keyLabel = `${provider.provider}:${model}:${apiKeyEntry.label}`;
-        let hardFailureTriggered = false;
+        let modelFailureTriggered = false;
 
         for (let attempt = 1; attempt <= MAX_REQUEST_ATTEMPTS; attempt += 1) {
           if ((provider.modelCursor ?? 0) > modelIndex) {
@@ -1585,21 +1600,37 @@ async function generateWithProviders({ game, prompt, targetDate, providers, rout
               `[lane ${laneIndex + 1}] [${routeKey}] Failed with ${keyLabel} (attempt ${attempt}/${MAX_REQUEST_ATTEMPTS}): ${message}`
             );
 
-            if (classifyProviderError(message) === 'hard_failure') {
+            const errorType = classifyProviderError(message);
+            if (errorType === 'provider_model_failure') {
               advanceProviderModel(provider, modelIndex, routeKey, laneIndex, message);
-              hardFailureTriggered = true;
+              modelFailureTriggered = true;
+              moveToNextRouteModel = true;
+              break;
+            }
+
+            if (errorType === 'route_model_failure') {
+              console.warn(
+                `[lane ${laneIndex + 1}] [${routeKey}] Moving from ${provider.provider}:${model} to the next fallback model for this route only because the generated output was invalid: ${truncateForLog(message, 160)}`
+              );
+              modelFailureTriggered = true;
+              moveToNextRouteModel = true;
               break;
             }
           }
         }
 
-        if (hardFailureTriggered || (provider.modelCursor ?? 0) > modelIndex) {
+        if (modelFailureTriggered || (provider.modelCursor ?? 0) > modelIndex) {
           break;
         }
       }
 
       if ((provider.modelCursor ?? 0) > modelIndex) {
         modelIndex = provider.modelCursor;
+        continue;
+      }
+
+      if (moveToNextRouteModel) {
+        modelIndex += 1;
         continue;
       }
 

@@ -52,7 +52,7 @@
       Contact WordSolverX
     </h1>
     <p class="mt-3 text-lg text-slate-500 dark:text-slate-400 max-w-2xl">
-      Questions, corrections, feature requests, or business inquiries — email us and we'll take a look.
+      Questions, corrections, feature requests, or business inquiries - email us and we'll take a look.
     </p>
   </div>
 
@@ -77,7 +77,7 @@
           {#each [
             { label: 'Answer corrections', desc: 'Wrong answer on a daily page or in the archive' },
             { label: 'Solver issues', desc: 'Tool producing incorrect results or broken functionality' },
-            { label: 'New game requests', desc: 'A daily puzzle game you play that we don\'t cover yet' },
+            { label: 'New game requests', desc: 'A daily puzzle game you play that we do not cover yet' },
             { label: 'Business inquiries', desc: 'Partnerships, media, or advertising questions' },
             { label: 'Site feedback', desc: 'Usability problems, design suggestions, or content ideas' },
             { label: 'Privacy or legal', desc: 'Questions about data handling, terms, or content removal' },
@@ -86,7 +86,7 @@
               <span class="mt-0.5 w-1.5 h-1.5 rounded-full bg-teal-500 shrink-0"></span>
               <div>
                 <span class="font-semibold text-slate-900 dark:text-slate-100">{item.label}</span>
-                <span class="text-slate-500 dark:text-slate-400"> — {item.desc}</span>
+                <span class="text-slate-500 dark:text-slate-400"> - {item.desc}</span>
               </div>
             </li>
           {/each}
@@ -122,16 +122,17 @@
     <h2 class="text-xl font-bold text-slate-900 dark:text-slate-50 mb-3">Before You Write</h2>
     <div class="prose prose-slate dark:prose-invert max-w-none text-sm">
       <p>
-        Including the page URL, game name, and date helps us review your message faster. If you're reporting a solver issue, describe what you entered (letters and colors) and what result you expected versus what you got. Screenshots help, but plain text is usually enough — we can reproduce most issues from a description of the inputs.
-      
+        Including the page URL, game name, and date helps us review your message faster. If you're reporting a solver issue, describe what you entered (letters and colors) and what result you expected versus what you got. Screenshots help, but plain text is usually enough - we can reproduce most issues from a description of the inputs.
+      </p>
       <p>
-        For new game requests, tell us the game name, the URL where it's played, and roughly how many daily players it has. We prioritize games with established player bases because those benefit the most people. That said, we add niche games too if they're well-built and have a consistent daily cycle.
-      
+        For new game requests, tell us the game name, the URL where it's played, and roughly how many daily players it has. We prioritize games with established player bases because those benefit the most people. That said, we add niche games too if they are well built and have a consistent daily cycle.
+      </p>
       <p>
-        We read every message. Response time varies — simple corrections are usually fixed within a day, while feature requests take longer because they require development work. If you don't hear back within a week, send a follow-up.
+        We read every message. Response time varies - simple corrections are usually fixed within a day, while feature requests take longer because they require development work. If you do not hear back within a week, send a follow-up.
+      </p>
       <p>
         You can also review our <a href="/editorial-policy">Editorial Policy</a> for verification and correction standards.
-      
+      </p>
     </div>
   </div>
 
@@ -140,16 +141,14 @@
     <div class="prose prose-slate dark:prose-invert max-w-none prose-headings:scroll-mt-20">
       <h2 class="text-slate-900 dark:text-slate-50">How We Handle Feedback</h2>
       <p>
-        Every message we receive goes into a queue and gets reviewed by a real person. We don't use automated responses or chatbots — if you email us, you'll get a human-written reply. For corrections specifically, we try to verify the issue against the game's source data before making changes. Sometimes what looks like a wrong answer is actually correct but unexpected (like when Wordle uses a obscure word), so verification prevents us from "fixing" things that aren't broken.
-      
+        Every message we receive goes into a queue and gets reviewed by a real person. We do not use automated responses or chatbots - if you email us, you will get a human-written reply. For corrections specifically, we try to verify the issue against the game's source data before making changes. Sometimes what looks like a wrong answer is actually correct but unexpected, so verification prevents us from "fixing" things that are not broken.
+      </p>
       <p>
-        Feature requests are tracked in a backlog. We can't promise timelines, but we can tell you whether a request is likely to be implemented. High-impact features — things that benefit a large number of players — get prioritized. If your request is niche but well-thought-out, it might still happen, just not immediately.
-      
+        Feature requests are tracked in a backlog. We cannot promise timelines, but we can tell you whether a request is likely to be implemented. High-impact features - things that benefit a large number of players - get prioritized. If your request is niche but well thought out, it might still happen, just not immediately.
+      </p>
       <p>
-        Business and media inquiries get routed separately. If you're a journalist writing about puzzle culture, a game developer who wants your game covered, or an advertiser interested in the site, use the same email but mention your context in the subject line. It helps us route the message to the right person.
-      
+        Business and media inquiries get routed separately. If you are a journalist writing about puzzle culture, a game developer who wants your game covered, or an advertiser interested in the site, use the same email but mention your context in the subject line. It helps us route the message to the right person.
+      </p>
     </div>
   </div>
 </div>
-
-

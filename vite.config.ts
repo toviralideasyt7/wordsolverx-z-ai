@@ -8,8 +8,8 @@ export default defineConfig({
 		sourcemap: false,
 		reportCompressedSize: true,
 		minify: 'esbuild',
-		// Warn if chunks exceed 500KB
-		chunkSizeWarningLimit: 500,
+		// This app intentionally ships a few large precomputed data bundles for puzzle solvers.
+		chunkSizeWarningLimit: 2000,
 	},
 	esbuild: {
 		drop: ['console', 'debugger'],
